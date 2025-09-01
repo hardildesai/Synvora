@@ -12,7 +12,8 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { useToast } from '@/hooks/use-toast';
 import { UserDetails } from './UserDetailsForm';
 import { processPayment } from '@/app/tickets/actions';
-import { Loader2, Upload } from 'lucide-react';
+import { Loader2, Upload, ArrowLeft } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const paymentFormSchema = z.object({
   transactionId: z.string().min(5, 'Transaction ID seems too short.'),
@@ -24,10 +25,10 @@ type PaymentFormData = z.infer<typeof paymentFormSchema>;
 interface PaymentFormProps {
   userDetails: UserDetails;
   onPaymentSuccess: (code: string) => void;
-  onTryAgain: () => void;
+  onGoBack: () => void;
 }
 
-export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFormProps) {
+export default function PaymentForm({ userDetails, onPaymentSuccess, onGoBack }: PaymentFormProps) {
   const { toast } = useToast();
   const [screenshotDataUri, setScreenshotDataUri] = useState<string | null>(null);
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
@@ -72,10 +73,6 @@ export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFo
     setIsProcessing(false);
 
     if (result.success && result.eventCode) {
-      toast({
-        title: 'Payment Verified!',
-        description: 'Your ticket is confirmed. Redirecting...',
-      });
       onPaymentSuccess(result.eventCode);
     } else {
       toast({
@@ -90,20 +87,33 @@ export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFo
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader>
-          <CardTitle className="font-headline text-2xl">Complete Your Payment</CardTitle>
-          <CardDescription>Scan the QR code to pay, then enter the details below.</CardDescription>
+          <div className="flex items-center gap-4">
+             <Button variant="ghost" size="icon" onClick={onGoBack} className="flex-shrink-0">
+              <ArrowLeft />
+            </Button>
+            <div>
+              <CardTitle className="font-headline text-xl">2. Payment & Verification</CardTitle>
+              <CardDescription>Scan, pay, and upload proof.</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex justify-center bg-white p-4 rounded-lg">
             <Image
               src="https://picsum.photos/300/300"
               alt="Payment QR Code"
-              width={300}
-              height={300}
+              width={250}
+              height={250}
               data-ai-hint="qr code"
               className="rounded-md"
             />
           </div>
+          <Alert>
+            <AlertTitle className="font-semibold">Important!</AlertTitle>
+            <AlertDescription>
+            Upload a screenshot with the transaction ID clearly visible. Verification is manual and may take some time.
+            </AlertDescription>
+          </Alert>
           <FormField
             control={form.control}
             name="transactionId"
@@ -123,15 +133,9 @@ export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFo
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Payment Screenshot</FormLabel>
-                <FormControl>
+                 <FormControl>
                   <div className="relative">
-                    <Button type="button" variant="outline" asChild>
-                      <label htmlFor="paymentScreenshot" className="cursor-pointer flex items-center gap-2">
-                        <Upload className="w-4 h-4" />
-                        Upload Image
-                      </label>
-                    </Button>
-                    <Input id="paymentScreenshot" type="file" accept="image/*" {...fileRef} onChange={handleFileChange} className="absolute w-full h-full opacity-0 cursor-pointer top-0 left-0" />
+                    <Input id="paymentScreenshot" type="file" accept="image/*" {...fileRef} onChange={handleFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -140,7 +144,7 @@ export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFo
           />
           {screenshotPreview && (
             <div className="mt-4">
-              <Image src={screenshotPreview} alt="Screenshot preview" width={200} height={400} className="rounded-md object-contain mx-auto" />
+              <Image src={screenshotPreview} alt="Screenshot preview" width={200} height={400} className="rounded-md object-contain mx-auto border-2 border-dashed border-primary/50 p-2" />
             </div>
           )}
         </CardContent>
@@ -152,7 +156,7 @@ export default function PaymentForm({ userDetails, onPaymentSuccess }: PaymentFo
                 Verifying...
               </>
             ) : (
-              'Verify Payment'
+              'Submit for Verification'
             )}
           </Button>
         </CardFooter>
