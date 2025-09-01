@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import Logo from './Logo';
-import { Ticket, UserCog } from 'lucide-react';
+import { Ticket } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CountdownTimer from './CountdownTimer';
@@ -68,12 +68,6 @@ const Header = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/admin">
-              <UserCog />
-              <span className="sr-only">Admin Panel</span>
-            </Link>
-          </Button>
         </nav>
       </div>
     </header>

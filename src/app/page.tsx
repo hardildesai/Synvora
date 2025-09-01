@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <main className="flex-grow">
-        <div className="relative z-10">
+        <div className="relative z-0">
           <HeroScroll>
             {/* Event Info Section */}
             <section id="info" className="py-20">
@@ -35,7 +35,7 @@ export default function Home() {
                     </CardHeader>
                     <CardContent><p className="text-lg font-bold">6:30 PM Onwards</p></CardContent>
                   </Card>
-                  <Card className="bg-card/80 backdrop-blur-sm border-primary/30">
+                  <Card className="bg-card/80 backdrop_blur-sm border-primary/30">
                     <CardHeader>
                       <CardTitle className="flex items-center justify-center gap-3 font-headline text-primary"><MapPin className="w-8 h-8"/>Venue</CardTitle>
                     </CardHeader>
