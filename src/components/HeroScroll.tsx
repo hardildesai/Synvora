@@ -13,7 +13,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
   });
 
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.35], [1, 1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.35], [1, 1, 0]);
   
   const position = useTransform(scrollYProgress, (pos) =>
     pos >= 1 ? 'relative' : 'sticky'
@@ -33,7 +33,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
           opacity,
           y: titleY,
         }}
-        className="top-0 flex h-screen w-full flex-col items-center justify-start pt-48 left-0 z-10"
+        className="top-0 flex h-screen w-full flex-col items-center justify-start pt-48 left-0"
       >
         <div className="container relative px-4 md:px-6 text-center">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
