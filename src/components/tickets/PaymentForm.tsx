@@ -80,6 +80,7 @@ export default function PaymentForm({ userDetails, passDetails, onPaymentSuccess
       foodType: userDetails.foodType || 'not-applicable',
       transactionId: data.transactionId,
       paymentScreenshotDataUri: screenshotDataUri,
+      passType: passDetails.passType,
     });
 
     setIsProcessing(false);
