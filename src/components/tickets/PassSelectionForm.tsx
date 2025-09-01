@@ -20,10 +20,10 @@ import {
   CardTitle,
 } from '../ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Ticket, Star, Crown } from 'lucide-react';
+import { Ticket, Users, Utensils } from 'lucide-react';
 
 const formSchema = z.object({
-  passType: z.enum(['general', 'vip', 'premium'], {
+  passType: z.enum(['general-no-food', 'general-with-food', 'couples-with-food'], {
     required_error: 'You need to select a pass type.',
   }),
 });
@@ -60,10 +60,10 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                   >
                     <FormItem>
                       <FormControl>
-                        <RadioGroupItem value="general" id="general" className="sr-only" />
+                        <RadioGroupItem value="general-no-food" id="general-no-food" className="sr-only" />
                       </FormControl>
                       <FormLabel
-                        htmlFor="general"
+                        htmlFor="general-no-food"
                         className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
@@ -71,50 +71,50 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                             <Ticket className="w-5 h-5 text-accent" /> General Pass
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Access to the main event area and GA zones.
+                            Entry to the event. Food not included.
                           </p>
                         </div>
-                        <div className="text-xl font-bold text-primary">₹999</div>
+                        <div className="text-xl font-bold text-primary">₹550</div>
                       </FormLabel>
                     </FormItem>
 
                     <FormItem>
                       <FormControl>
-                        <RadioGroupItem value="vip" id="vip" className="sr-only" />
+                        <RadioGroupItem value="general-with-food" id="general-with-food" className="sr-only" />
                       </FormControl>
                       <FormLabel
-                        htmlFor="vip"
+                        htmlFor="general-with-food"
                         className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
-                            <Star className="w-5 h-5 text-accent" /> VIP Pass
+                            <Utensils className="w-5 h-5 text-accent" /> General Pass + Food
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Express entry, VIP lounge & complimentary drinks.
+                            Event entry with a food coupon included.
                           </p>
                         </div>
-                        <div className="text-xl font-bold text-primary">₹2499</div>
+                        <div className="text-xl font-bold text-primary">₹700</div>
                       </FormLabel>
                     </FormItem>
                     
                     <FormItem>
                       <FormControl>
-                        <RadioGroupItem value="premium" id="premium" className="sr-only" />
+                        <RadioGroupItem value="couples-with-food" id="couples-with-food" className="sr-only" />
                       </FormControl>
                       <FormLabel
-                        htmlFor="premium"
+                        htmlFor="couples-with-food"
                         className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
-                            <Crown className="w-5 h-5 text-accent" /> Premium Experience
+                            <Users className="w-5 h-5 text-accent" /> Couples Entry + Food
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Backstage access, artist meet & greet, and more.
+                            Entry for two with food coupons included.
                           </p>
                         </div>
-                        <div className="text-xl font-bold text-primary">₹4999</div>
+                        <div className="text-xl font-bold text-primary">₹1200</div>
                       </FormLabel>
                     </FormItem>
 

@@ -12,7 +12,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { useToast } from '@/hooks/use-toast';
 import { UserDetails } from './UserDetailsForm';
 import { processPayment } from '@/app/tickets/actions';
-import { Loader2, Upload, ArrowLeft, Ticket, Star, Crown } from 'lucide-react';
+import { Loader2, Upload, ArrowLeft, Ticket, Users, Utensils } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PassDetails } from './PassSelectionForm';
 import { Badge } from '../ui/badge';
@@ -33,9 +33,9 @@ interface PaymentFormProps {
 }
 
 const passInfo = {
-  general: { name: 'General Pass', icon: Ticket, price: '₹999' },
-  vip: { name: 'VIP Pass', icon: Star, price: '₹2499' },
-  premium: { name: 'Premium Experience', icon: Crown, price: '₹4999' },
+  'general-no-food': { name: 'General Pass', icon: Ticket, price: '₹550' },
+  'general-with-food': { name: 'General Pass + Food', icon: Utensils, price: '₹700' },
+  'couples-with-food': { name: 'Couples Entry + Food', icon: Users, price: '₹1200' },
 };
 
 
@@ -77,6 +77,7 @@ export default function PaymentForm({ userDetails, passDetails, onPaymentSuccess
 
     const result = await processPayment({
       ...userDetails,
+      foodType: userDetails.foodType || 'not-applicable',
       transactionId: data.transactionId,
       paymentScreenshotDataUri: screenshotDataUri,
     });

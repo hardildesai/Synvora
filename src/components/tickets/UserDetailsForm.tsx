@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { ArrowLeft, Ticket, Star, Crown } from 'lucide-react';
+import { ArrowLeft, Ticket, Users, Utensils } from 'lucide-react';
 import { PassDetails } from './PassSelectionForm';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,7 +17,7 @@ const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
   phone: z.string().min(10, { message: 'Phone number must be at least 10 digits.' }),
   gender: z.enum(['male', 'female'], { required_error: 'Please select a gender.' }),
-  foodType: z.enum(['regular', 'jain'], { required_error: 'Please select a food type.' }),
+  foodType: z.string().optional(),
 });
 
 export type UserDetails = z.infer<typeof formSchema>;
@@ -29,9 +29,9 @@ interface UserDetailsFormProps {
 }
 
 const passInfo = {
-  general: { name: 'General Pass', icon: Ticket, price: '₹999' },
-  vip: { name: 'VIP Pass', icon: Star, price: '₹2499' },
-  premium: { name: 'Premium Experience', icon: Crown, price: '₹4999' },
+  'general-no-food': { name: 'General Pass', icon: Ticket, price: '₹550' },
+  'general-with-food': { name: 'General Pass + Food', icon: Utensils, price: '₹700' },
+  'couples-with-food': { name: 'Couples Entry + Food', icon: Users, price: '₹1200' },
 };
 
 export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: UserDetailsFormProps) {
@@ -47,9 +47,18 @@ export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: Use
   const selectedPass = passInfo[passDetails.passType];
   const SelectedIcon = selectedPass.icon;
 
+  const showFoodPreference = passDetails.passType === 'general-with-food' || passDetails.passType === 'couples-with-food';
+  
+  const handleFormSubmit = (data: UserDetails) => {
+    onSubmit({
+      ...data,
+      foodType: showFoodPreference ? data.foodType : 'none',
+    });
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
         <CardHeader>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={onGoBack} className="flex-shrink-0" type="button">
@@ -133,27 +142,29 @@ export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: Use
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="foodType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Food Preference</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your food preference" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="regular">Regular</SelectItem>
-                    <SelectItem value="jain">Jain</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+           {showFoodPreference && (
+            <FormField
+              control={form.control}
+              name="foodType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Food Preference</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your food preference" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="regular">Regular</SelectItem>
+                      <SelectItem value="jain">Jain</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full font-bold">Next: Payment</Button>
