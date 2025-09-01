@@ -24,21 +24,19 @@ const CountdownTimer = ({ targetDate, compact = false }: { targetDate: string, c
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    // This effect runs only on the client, after the initial render.
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
+    // Initial calculation on mount to avoid delay
+    setTimeLeft(calculateTimeLeft());
+
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  if (!isClient) {
-    return null;
-  }
-  
   const timeEntries = Object.entries(timeLeft);
 
   if (compact) {
