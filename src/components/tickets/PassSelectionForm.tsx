@@ -64,7 +64,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted data-[state=checked]:shadow-[0_0_20px_theme(colors.primary/50%)]"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="vip"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted data-[state=checked]:shadow-[0_0_20px_theme(colors.primary/50%)]"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -104,7 +104,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="premium"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted data-[state=checked]:shadow-[0_0_20px_theme(colors.primary/50%)]"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
