@@ -27,8 +27,8 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
   const titleY = useTransform(scrollYProgress, [0, 0.3], ['0%', '-50%']);
 
   // Fade in the content after the title has settled
-  const contentOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.3, 0.4], ['20px', '0px']);
+  const contentOpacity = useTransform(scrollYProgress, [0.2, 0.3], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.2, 0.3], ['40px', '0px']);
 
   return (
     <div ref={targetRef} className="relative h-[200vh] w-full">
