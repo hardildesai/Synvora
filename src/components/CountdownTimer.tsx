@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CountdownTimer = ({ targetDate, compact = false }: { targetDate: string, compact?: boolean }) => {
   const calculateTimeLeft = () => {
