@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { ArrowLeft } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -18,9 +19,10 @@ export type UserDetails = z.infer<typeof formSchema>;
 
 interface UserDetailsFormProps {
   onSubmit: (data: UserDetails) => void;
+  onGoBack: () => void;
 }
 
-export default function UserDetailsForm({ onSubmit }: UserDetailsFormProps) {
+export default function UserDetailsForm({ onSubmit, onGoBack }: UserDetailsFormProps) {
   const form = useForm<UserDetails>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,8 +36,15 @@ export default function UserDetailsForm({ onSubmit }: UserDetailsFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader>
-          <CardTitle className="font-headline text-xl">1. Your Details</CardTitle>
-          <CardDescription>Enter your info to continue.</CardDescription>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" onClick={onGoBack} className="flex-shrink-0" type="button">
+              <ArrowLeft />
+            </Button>
+            <div>
+              <CardTitle className="font-headline text-xl">2. Your Details</CardTitle>
+              <CardDescription>Enter your info to continue.</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <FormField

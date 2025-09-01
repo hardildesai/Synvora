@@ -6,13 +6,20 @@ import UserDetailsForm from './UserDetailsForm';
 import PaymentForm from './PaymentForm';
 import SuccessDisplay from './SuccessDisplay';
 import { Card } from '../ui/card';
+import PassSelectionForm, { PassDetails } from './PassSelectionForm';
 
-type Step = 'details' | 'payment' | 'success';
+type Step = 'pass' | 'details' | 'payment' | 'success';
 
 export default function TicketPurchaseFlow() {
-  const [step, setStep] = useState<Step>('details');
+  const [step, setStep] = useState<Step>('pass');
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [eventCode, setEventCode] = useState<string | null>(null);
+  const [passDetails, setPassDetails] = useState<PassDetails | null>(null);
+
+  const handlePassSubmit = (data: PassDetails) => {
+    setPassDetails(data);
+    setStep('details');
+  };
 
   const handleDetailsSubmit = (data: UserDetails) => {
     setUserDetails(data);
@@ -23,25 +30,27 @@ export default function TicketPurchaseFlow() {
     setEventCode(code);
     setStep('success');
   };
-  
-  const handleTryAgain = () => {
-    setStep('payment');
-  }
 
   const handleGoBackToDetails = () => {
     setStep('details');
   }
 
+  const handleGoBackToPass = () => {
+    setStep('pass');
+  };
+
   const renderStep = () => {
     switch (step) {
+      case 'pass':
+        return <PassSelectionForm onSubmit={handlePassSubmit} />;
       case 'details':
-        return <UserDetailsForm onSubmit={handleDetailsSubmit} />;
+        return <UserDetailsForm onSubmit={handleDetailsSubmit} onGoBack={handleGoBackToPass} />;
       case 'payment':
         return <PaymentForm userDetails={userDetails!} onPaymentSuccess={handlePaymentSuccess} onGoBack={handleGoBackToDetails} />;
       case 'success':
         return <SuccessDisplay eventCode={eventCode!} />;
       default:
-        return <UserDetailsForm onSubmit={handleDetailsSubmit} />;
+        return <PassSelectionForm onSubmit={handlePassSubmit} />;
     }
   };
 

@@ -88,11 +88,11 @@ export default function PaymentForm({ userDetails, onPaymentSuccess, onGoBack }:
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardHeader>
           <div className="flex items-center gap-4">
-             <Button variant="ghost" size="icon" onClick={onGoBack} className="flex-shrink-0">
+             <Button variant="ghost" size="icon" onClick={onGoBack} className="flex-shrink-0" type="button">
               <ArrowLeft />
             </Button>
             <div>
-              <CardTitle className="font-headline text-xl">2. Payment & Verification</CardTitle>
+              <CardTitle className="font-headline text-xl">3. Payment & Verification</CardTitle>
               <CardDescription>Scan, pay, and upload proof.</CardDescription>
             </div>
           </div>
