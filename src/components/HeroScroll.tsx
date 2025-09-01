@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import CountdownTimer from './CountdownTimer';
 
 const HeroScroll = ({ children }: { children: React.ReactNode }) => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -23,6 +24,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
 
   const contentOpacity = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
   const contentY = useTransform(scrollYProgress, [0.1, 0.25], ['40px', '0px']);
+  const eventDate = '2024-09-20T18:30:00';
 
   return (
     <div ref={targetRef} className="relative h-[200vh] w-full">
@@ -42,6 +44,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
           <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
             Where Music Meets Experience
           </p>
+          <CountdownTimer targetDate={eventDate} />
           <div className="mt-8">
             <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
               <Link href="/tickets">Book Your Tickets Now</Link>
