@@ -10,11 +10,14 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { ArrowLeft, Ticket, Star, Crown } from 'lucide-react';
 import { PassDetails } from './PassSelectionForm';
 import { Badge } from '../ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   phone: z.string().min(10, { message: 'Phone number must be at least 10 digits.' }),
+  gender: z.enum(['male', 'female'], { required_error: 'Please select a gender.' }),
+  foodType: z.enum(['regular', 'jain'], { required_error: 'Please select a food type.' }),
 });
 
 export type UserDetails = z.infer<typeof formSchema>;
@@ -105,6 +108,48 @@ export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: Use
                 <FormControl>
                   <Input type="tel" placeholder="+1 (555) 555-5555" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="foodType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Food Preference</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your food preference" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="regular">Regular</SelectItem>
+                    <SelectItem value="jain">Jain</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

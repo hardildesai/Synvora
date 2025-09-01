@@ -9,6 +9,9 @@ const processPaymentInputSchema = z.object({
   paymentScreenshotDataUri: z.string(),
   name: z.string(),
   email: z.string().email(),
+  phone: z.string(),
+  gender: z.string(),
+  foodType: z.string(),
 });
 
 type ProcessPaymentInput = z.infer<typeof processPaymentInputSchema>;
