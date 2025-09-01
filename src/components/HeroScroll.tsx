@@ -39,7 +39,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
           opacity,
           y: titleY,
         }}
-        className="top-0 flex h-screen flex-col items-center justify-center"
+        className="top-0 flex h-screen w-full flex-col items-center justify-start pt-48 left-0"
       >
         <div className="container relative z-20 px-4 md:px-6 text-center">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
