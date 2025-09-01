@@ -64,7 +64,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent has-[:checked]:ring-primary transition-all"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent transition-all data-[state=checked]:ring-primary"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="vip"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent has-[:checked]:ring-primary transition-all"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent transition-all data-[state=checked]:ring-primary"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
