@@ -31,26 +31,32 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
       <motion.div
         style={{
           position,
-          scale,
-          opacity,
-          y: titleY,
         }}
-        className="top-0 flex h-screen w-full flex-col items-center justify-start pt-48 left-0"
+        className="top-0 h-screen w-full"
       >
-        <div className="container relative px-4 md:px-6 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
-            Synvora
-          </h1>
-          <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
-            Where Music Meets Experience
-          </p>
-          <CountdownTimer targetDate={eventDate} />
-          <div className="mt-8">
-            <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
-              <Link href="/tickets">Book Your Tickets Now</Link>
-            </Button>
+        <motion.div
+          style={{
+            scale,
+            opacity,
+            y: titleY,
+          }}
+          className="flex h-full w-full flex-col items-center justify-start pt-48"
+        >
+          <div className="container relative px-4 md:px-6 text-center">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
+              Synvora
+            </h1>
+            <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
+              Where Music Meets Experience
+            </p>
+            <CountdownTimer targetDate={eventDate} />
+            <div className="mt-8">
+              <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
+                <Link href="/tickets">Book Your Tickets Now</Link>
+              </Button>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
       <div className="absolute top-[100vh] left-0 w-full">
         <motion.div
@@ -58,7 +64,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
             opacity: contentOpacity,
             y: contentY,
             }}
-            className="relative z-20"
+            className="relative z-10"
         >
             {children}
         </motion.div>
