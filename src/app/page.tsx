@@ -4,32 +4,13 @@ import { Calendar, Clock, MapPin, Music, Star, User, HelpCircle, Mail, Twitter, 
 import Image from 'next/image';
 import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import HeroScroll from '@/components/HeroScroll';
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative min-h-screen text-center flex flex-col items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-primary/40 to-black opacity-50 z-0"></div>
-            <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-            <div className="container relative z-20 px-4 md:px-6">
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_rgba(var(--primary-rgb),0.8)]">
-                    Synvora
-                </h1>
-                <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
-                    Where Music Meets Experience
-                </p>
-                <div className="mt-8">
-                    <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_theme(colors.primary)] hover:shadow-[0_0_30px_theme(colors.primary)]">
-                        <Link href="/tickets">Book Your Tickets Now</Link>
-                    </Button>
-                </div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-20"></div>
-        </section>
-
-        <div className="relative z-30 bg-black -mt-16">
+        <HeroScroll>
           {/* Event Info Section */}
           <section id="info" className="py-20">
             <div className="container px-4 md:px-6 text-center">
@@ -217,11 +198,8 @@ export default function Home() {
               </div>
             </div>
           </section>
-        </div>
-
+        </HeroScroll>
       </main>
     </div>
   );
 }
-
-    
