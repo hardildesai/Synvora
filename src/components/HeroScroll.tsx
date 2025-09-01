@@ -58,7 +58,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
             opacity: contentOpacity,
             y: contentY,
             }}
-            className="relative z-10"
+            className="relative z-20"
         >
             {children}
         </motion.div>
