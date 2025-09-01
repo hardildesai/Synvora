@@ -12,13 +12,21 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
     offset: ['start start', 'end start'],
   });
 
+  // Scale the title from 100% down to 80% over the first 30% of the scroll
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  
+  // Keep opacity at 1 until 30% scrolled, then fade slightly to 0.9, but don't disappear.
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.35], [1, 1, 0.9]);
+  
+  // Keep the title sticky until the scroll container is passed
   const position = useTransform(scrollYProgress, (pos) =>
     pos >= 1 ? 'relative' : 'sticky'
   );
+  
+  // Move the title up as you scroll
   const titleY = useTransform(scrollYProgress, [0, 0.3], ['0%', '-50%']);
 
+  // Fade in the content after the title has settled
   const contentOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
   const contentY = useTransform(scrollYProgress, [0.3, 0.4], ['20px', '0px']);
 
@@ -31,7 +39,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
           opacity,
           y: titleY,
         }}
-        className="top-0 left-0 w-full flex h-screen flex-col items-center justify-center"
+        className="top-0 flex h-screen flex-col items-center justify-center"
       >
         <div className="container relative z-20 px-4 md:px-6 text-center">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
