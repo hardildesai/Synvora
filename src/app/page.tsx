@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, MapPin, Music, Star, User, HelpCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, Music, Star, User, HelpCircle, Mail, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -15,76 +15,103 @@ export default function Home() {
             <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
             <div className="container relative z-20 px-4 md:px-6">
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_rgba(var(--primary-rgb),0.8)]">
-                    Synvora Night
+                    Synvora
                 </h1>
-                <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300">
-                    Where the music, lights, and energy become one. An unforgettable experience awaits.
+                <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
+                    Where Music Meets Experience
                 </p>
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-lg font-semibold text-neutral-200">
-                    <div className="flex items-center gap-2"><Calendar className="w-5 h-5 text-accent"/> 20th September</div>
-                    <div className="flex items-center gap-2"><Clock className="w-5 h-5 text-accent"/> 6:30 PM Onwards</div>
-                    <div className="flex items-center gap-2"><MapPin className="w-5 h-5 text-accent"/> Venue TBD</div>
-                </div>
                 <div className="mt-8">
                     <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_theme(colors.primary)] hover:shadow-[0_0_30px_theme(colors.primary)]">
-                        <Link href="/tickets">Buy Pass</Link>
+                        <Link href="/tickets">Book Your Tickets Now</Link>
                     </Button>
                 </div>
             </div>
         </section>
 
-        {/* Highlights Section */}
-        <section id="highlights" className="py-20 bg-secondary/20">
+        {/* Event Info Section */}
+        <section id="info" className="py-20 bg-black">
+          <div className="container px-4 md:px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold font-headline text-accent mb-4">The Vision of Synvora</h2>
+            <p className="max-w-3xl mx-auto text-neutral-300 mb-12">
+              Synvora is not just an event; it's a convergence of sound, art, and soul. We aim to create a world-class experience that transcends the ordinary, bringing together a community of music lovers to celebrate life and creativity under a starlit sky.
+            </p>
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <Card className="bg-card/80 backdrop-blur-sm border-primary/30">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-center gap-3 font-headline text-primary"><Calendar className="w-8 h-8"/>Date</CardTitle>
+                </CardHeader>
+                <CardContent><p className="text-lg font-bold">20th September</p></CardContent>
+              </Card>
+              <Card className="bg-card/80 backdrop-blur-sm border-primary/30">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-center gap-3 font-headline text-primary"><Clock className="w-8 h-8"/>Time</CardTitle>
+                </CardHeader>
+                <CardContent><p className="text-lg font-bold">6:30 PM Onwards</p></CardContent>
+              </Card>
+              <Card className="bg-card/80 backdrop-blur-sm border-primary/30">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-center gap-3 font-headline text-primary"><MapPin className="w-8 h-8"/>Venue</CardTitle>
+                </CardHeader>
+                <CardContent><p className="text-lg font-bold">Venue TBD</p></CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Gallery Section */}
+        <section id="gallery" className="py-20 bg-secondary/20">
             <div className="container px-4 md:px-6">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Event Highlights</h2>
-                <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                  <Card className="text-left bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3">
-                        <Music className="w-8 h-8 text-primary" />
-                        <span className="font-headline">Stellar DJ Lineup</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Featuring top artists like DJ Aurora, Nova, and ByteFlow who will keep you dancing all night long.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="text-left bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3">
-                        <Star className="w-8 h-8 text-primary" />
-                        <span className="font-headline">Exclusive Experience</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        A unique thematic concept with immersive visuals and an electrifying atmosphere you won't find anywhere else.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="text-left bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3">
-                        <User className="w-8 h-8 text-primary" />
-                        <span className="font-headline">VIP Perks</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Upgrade your night with express entry, access to the exclusive VIP lounge, and complimentary drinks.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Gallery & Aftermovie Teaser</h2>
                 <div className="grid md:grid-cols-2 gap-4 mt-8">
                   <Image src="https://picsum.photos/600/400" width={600} height={400} alt="Event Teaser 1" className="rounded-lg" data-ai-hint="music festival" />
                   <Image src="https://picsum.photos/600/400" width={600} height={400} alt="Event Teaser 2" className="rounded-lg" data-ai-hint="concert crowd" />
                 </div>
             </div>
+        </section>
+
+        {/* Meet the Team Section */}
+        <section id="team" className="py-20 bg-black">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Meet The Team</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+                <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 1" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Alex Mercer</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Creative Director</p>
+                </CardHeader>
+                <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                </CardContent>
+              </Card>
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+                <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 2" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Jasmine Rao</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Tech Head</p>
+                </CardHeader>
+                <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                </CardContent>
+              </Card>
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+                <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 3" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Rohan Sharma</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Promotions Lead</p>
+                </CardHeader>
+                <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </section>
 
         {/* FAQs Section */}
@@ -114,6 +141,26 @@ export default function Home() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
+          </div>
+        </section>
+        
+        {/* Contact Section */}
+        <section id="contact" className="py-20 bg-black">
+          <div className="container px-4 md:px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold font-headline text-accent mb-4">Get In Touch</h2>
+            <p className="max-w-2xl mx-auto text-neutral-300 mb-8">
+              Have questions or want to partner with us? Reach out!
+            </p>
+            <div className="flex justify-center items-center gap-8">
+              <Link href="mailto:support@synvora.com" className="text-lg font-semibold flex items-center gap-2 text-muted-foreground hover:text-primary">
+                <Mail />
+                support@synvora.com
+              </Link>
+              <div className="flex items-center gap-4">
+                <Link href="#"><Twitter className="w-7 h-7 text-muted-foreground hover:text-primary"/></Link>
+                <Link href="#"><Linkedin className="w-7 h-7 text-muted-foreground hover:text-primary"/></Link>
+              </div>
+            </div>
           </div>
         </section>
 

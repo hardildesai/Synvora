@@ -20,10 +20,10 @@ import {
   CardTitle,
 } from '../ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Ticket, Star } from 'lucide-react';
+import { Ticket, Star, Crown } from 'lucide-react';
 
 const formSchema = z.object({
-  passType: z.enum(['general', 'vip'], {
+  passType: z.enum(['general', 'vip', 'premium'], {
     required_error: 'You need to select a pass type.',
   }),
 });
@@ -64,14 +64,14 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent transition-all data-[state=checked]:ring-primary"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
                             <Ticket className="w-5 h-5 text-accent" /> General Pass
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Access to the main event area.
+                            Access to the main event area and GA zones.
                           </p>
                         </div>
                         <div className="text-xl font-bold text-primary">₹999</div>
@@ -84,19 +84,40 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="vip"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted cursor-pointer ring-2 ring-transparent transition-all data-[state=checked]:ring-primary"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
                             <Star className="w-5 h-5 text-accent" /> VIP Pass
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Express entry, VIP lounge & more.
+                            Express entry, VIP lounge & complimentary drinks.
                           </p>
                         </div>
                         <div className="text-xl font-bold text-primary">₹2499</div>
                       </FormLabel>
                     </FormItem>
+                    
+                    <FormItem>
+                      <FormControl>
+                        <RadioGroupItem value="premium" id="premium" className="sr-only" />
+                      </FormControl>
+                      <FormLabel
+                        htmlFor="premium"
+                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
+                      >
+                        <div>
+                          <h3 className="font-bold text-lg flex items-center gap-2">
+                            <Crown className="w-5 h-5 text-accent" /> Premium Experience
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            Backstage access, artist meet & greet, and more.
+                          </p>
+                        </div>
+                        <div className="text-xl font-bold text-primary">₹4999</div>
+                      </FormLabel>
+                    </FormItem>
+
                   </RadioGroup>
                 </FormControl>
                 <FormMessage />
