@@ -6,18 +6,20 @@ import Logo from './Logo';
 import { Ticket } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
   const [showBookTickets, setShowBookTickets] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show button after scrolling past ~80% of the viewport height
-      if (window.scrollY > window.innerHeight * 0.8) {
-        setShowBookTickets(true);
-      } else {
-        setShowBookTickets(false);
-      }
+      const heroButtonThreshold = window.innerHeight * 0.7; // Approx when hero button is gone
+      const timerThreshold = window.innerHeight * 0.5; // Approx when hero timer is gone
+      
+      setShowBookTickets(window.scrollY > heroButtonThreshold);
+      setShowTimer(window.scrollY > timerThreshold);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -27,7 +29,22 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
-        <Logo />
+        <div className="flex items-center gap-6">
+          <Logo />
+           <AnimatePresence>
+            {showTimer && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="hidden md:flex"
+              >
+                <CountdownTimer targetDate={eventDate} compact />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         <nav className="flex items-center gap-4">
           <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
           <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
