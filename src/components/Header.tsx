@@ -14,7 +14,7 @@ const Header = () => {
           <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
-          <Button asChild className="font-bold shadow-[0_0_15px_theme(colors.primary/50%)] hover:shadow-[0_0_25px_theme(colors.primary/70%)] transition-shadow">
+          <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
             <Link href="/tickets">
               <Ticket className="mr-2 h-4 w-4" />
               Book Tickets
