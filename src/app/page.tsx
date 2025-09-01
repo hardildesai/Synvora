@@ -10,7 +10,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-black text-white">
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="min-h-screen text-center flex flex-col items-center justify-center overflow-hidden sticky top-0">
+        <section className="relative min-h-screen text-center flex flex-col items-center justify-center overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-black via-primary/40 to-black opacity-50 z-0"></div>
             <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
             <div className="container relative z-20 px-4 md:px-6">
@@ -26,9 +26,10 @@ export default function Home() {
                     </Button>
                 </div>
             </div>
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-20"></div>
         </section>
 
-        <div className="relative z-30 bg-black">
+        <div className="relative z-30 bg-black -mt-16">
           {/* Event Info Section */}
           <section id="info" className="py-20">
             <div className="container px-4 md:px-6 text-center">
