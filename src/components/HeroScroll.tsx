@@ -15,7 +15,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const position = useTransform(scrollYProgress, (pos) =>
-    pos === 1 ? 'relative' : 'sticky'
+    pos >= 1 ? 'relative' : 'sticky'
   );
   const titleY = useTransform(scrollYProgress, [0, 0.3], ['0%', '-50%']);
 
@@ -23,7 +23,7 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
   const contentY = useTransform(scrollYProgress, [0.3, 0.4], ['20px', '0px']);
 
   return (
-    <div ref={targetRef} className="relative min-h-[200vh] w-full">
+    <div ref={targetRef} className="relative h-[200vh] w-full">
       <motion.div
         style={{
           position,
@@ -47,15 +47,17 @@ const HeroScroll = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </motion.div>
-      <motion.div
-        style={{
-          opacity: contentOpacity,
-          y: contentY,
-        }}
-        className="relative z-10"
-      >
-        {children}
-      </motion.div>
+      <div className="absolute top-[100vh] left-0 w-full">
+        <motion.div
+            style={{
+            opacity: contentOpacity,
+            y: contentY,
+            }}
+            className="relative z-10"
+        >
+            {children}
+        </motion.div>
+      </div>
     </div>
   );
 };
