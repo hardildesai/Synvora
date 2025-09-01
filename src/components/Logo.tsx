@@ -8,7 +8,7 @@ const Logo = () => {
         <Music className="w-6 h-6" />
       </div>
       <span className="text-xl font-bold font-headline text-primary-foreground bg-primary/80 dark:bg-primary/50 px-3 py-2 rounded-lg">
-        RhythmPass
+        Synvora
       </span>
     </Link>
   );

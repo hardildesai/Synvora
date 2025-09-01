@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'RhythmPass',
+  title: 'Synvora',
   description: 'Your pass to the best music festivals.',
 };
 

@@ -9,7 +9,7 @@ export default function Home() {
       <div className="container px-4 md:px-6">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter font-headline text-primary-foreground bg-primary/80 dark:bg-primary/50 px-4 py-2 rounded-lg inline-block">
-            RhythmPass
+            Synvora
           </h1>
           <p className="max-w-[700px] mx-auto text-lg md:text-xl text-foreground/80">
             Your exclusive gateway to the most electrifying music festivals.

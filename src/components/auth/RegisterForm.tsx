@@ -23,7 +23,7 @@ export default function RegisterForm() {
       <form onSubmit={handleRegister}>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
-          <CardDescription>Join RhythmPass and get your festival tickets today.</CardDescription>
+          <CardDescription>Join Synvora and get your festival tickets today.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
