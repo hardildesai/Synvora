@@ -9,20 +9,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
-  const [showBookTickets, setShowBookTickets] = useState(false);
-  const [showTimer, setShowTimer] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
     const handleScroll = () => {
-      const heroButtonThreshold = window.innerHeight * 0.7; // Approx when hero button is gone
-      const timerThreshold = window.innerHeight * 0.5; // Approx when hero timer is gone
-      
-      setShowBookTickets(window.scrollY > heroButtonThreshold);
-      setShowTimer(window.scrollY > timerThreshold);
+      // Threshold to hide elements, e.g., after scrolling 90% of the viewport height
+      const threshold = window.innerHeight * 0.9;
+      setIsScrolled(window.scrollY > threshold);
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check on initial load
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -30,9 +28,20 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center gap-6">
-          <Logo />
+          <AnimatePresence>
+            {!isScrolled && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Logo />
+              </motion.div>
+            )}
+          </AnimatePresence>
            <AnimatePresence>
-            {showTimer && (
+            {isScrolled && (
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -52,7 +61,7 @@ const Header = () => {
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
           <AnimatePresence>
-            {showBookTickets && (
+            {isScrolled && (
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
