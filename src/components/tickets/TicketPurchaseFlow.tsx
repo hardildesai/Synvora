@@ -44,9 +44,9 @@ export default function TicketPurchaseFlow() {
       case 'pass':
         return <PassSelectionForm onSubmit={handlePassSubmit} />;
       case 'details':
-        return <UserDetailsForm onSubmit={handleDetailsSubmit} onGoBack={handleGoBackToPass} />;
+        return <UserDetailsForm onSubmit={handleDetailsSubmit} onGoBack={handleGoBackToPass} passDetails={passDetails!} />;
       case 'payment':
-        return <PaymentForm userDetails={userDetails!} onPaymentSuccess={handlePaymentSuccess} onGoBack={handleGoBackToDetails} />;
+        return <PaymentForm userDetails={userDetails!} onPaymentSuccess={handlePaymentSuccess} onGoBack={handleGoBackToDetails} passDetails={passDetails!} />;
       case 'success':
         return <SuccessDisplay eventCode={eventCode!} />;
       default:

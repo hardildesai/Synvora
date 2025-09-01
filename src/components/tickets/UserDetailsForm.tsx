@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Ticket, Star, Crown } from 'lucide-react';
+import { PassDetails } from './PassSelectionForm';
+import { Badge } from '../ui/badge';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -20,9 +22,16 @@ export type UserDetails = z.infer<typeof formSchema>;
 interface UserDetailsFormProps {
   onSubmit: (data: UserDetails) => void;
   onGoBack: () => void;
+  passDetails: PassDetails;
 }
 
-export default function UserDetailsForm({ onSubmit, onGoBack }: UserDetailsFormProps) {
+const passInfo = {
+  general: { name: 'General Pass', icon: Ticket, price: '₹999' },
+  vip: { name: 'VIP Pass', icon: Star, price: '₹2499' },
+  premium: { name: 'Premium Experience', icon: Crown, price: '₹4999' },
+};
+
+export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: UserDetailsFormProps) {
   const form = useForm<UserDetails>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +40,9 @@ export default function UserDetailsForm({ onSubmit, onGoBack }: UserDetailsFormP
       phone: '',
     },
   });
+
+  const selectedPass = passInfo[passDetails.passType];
+  const SelectedIcon = selectedPass.icon;
 
   return (
     <Form {...form}>
@@ -47,6 +59,14 @@ export default function UserDetailsForm({ onSubmit, onGoBack }: UserDetailsFormP
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="p-4 rounded-lg bg-muted/50 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <SelectedIcon className="w-6 h-6 text-accent" />
+                <span className="font-bold">{selectedPass.name}</span>
+              </div>
+              <Badge variant="secondary" className="text-lg">{selectedPass.price}</Badge>
+          </div>
+
           <FormField
             control={form.control}
             name="name"

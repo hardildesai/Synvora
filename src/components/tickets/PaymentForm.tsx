@@ -12,8 +12,11 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { useToast } from '@/hooks/use-toast';
 import { UserDetails } from './UserDetailsForm';
 import { processPayment } from '@/app/tickets/actions';
-import { Loader2, Upload, ArrowLeft } from 'lucide-react';
+import { Loader2, Upload, ArrowLeft, Ticket, Star, Crown } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PassDetails } from './PassSelectionForm';
+import { Badge } from '../ui/badge';
+
 
 const paymentFormSchema = z.object({
   transactionId: z.string().min(5, 'Transaction ID seems too short.'),
@@ -24,11 +27,19 @@ type PaymentFormData = z.infer<typeof paymentFormSchema>;
 
 interface PaymentFormProps {
   userDetails: UserDetails;
+  passDetails: PassDetails;
   onPaymentSuccess: (code: string) => void;
   onGoBack: () => void;
 }
 
-export default function PaymentForm({ userDetails, onPaymentSuccess, onGoBack }: PaymentFormProps) {
+const passInfo = {
+  general: { name: 'General Pass', icon: Ticket, price: '₹999' },
+  vip: { name: 'VIP Pass', icon: Star, price: '₹2499' },
+  premium: { name: 'Premium Experience', icon: Crown, price: '₹4999' },
+};
+
+
+export default function PaymentForm({ userDetails, passDetails, onPaymentSuccess, onGoBack }: PaymentFormProps) {
   const { toast } = useToast();
   const [screenshotDataUri, setScreenshotDataUri] = useState<string | null>(null);
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
@@ -83,6 +94,10 @@ export default function PaymentForm({ userDetails, onPaymentSuccess, onGoBack }:
     }
   };
 
+  const selectedPass = passInfo[passDetails.passType];
+  const SelectedIcon = selectedPass.icon;
+
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -98,6 +113,14 @@ export default function PaymentForm({ userDetails, onPaymentSuccess, onGoBack }:
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
+          <div className="p-4 rounded-lg bg-muted/50 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <SelectedIcon className="w-6 h-6 text-accent" />
+                <span className="font-bold">{selectedPass.name}</span>
+              </div>
+              <Badge variant="secondary" className="text-lg">{selectedPass.price}</Badge>
+          </div>
+
           <div className="flex justify-center bg-white p-4 rounded-lg">
             <Image
               src="https://picsum.photos/300/300"
