@@ -41,7 +41,7 @@ const CountdownTimer = ({ targetDate }: { targetDate: string }) => {
   }, [targetDate]);
 
   if (!isClient) {
-    // Render a placeholder or nothing on the server
+    // Render a placeholder or nothing on the server to prevent hydration mismatch
     return null;
   }
 
