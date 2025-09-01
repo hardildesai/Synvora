@@ -1,7 +1,6 @@
-import TicketPurchaseFlow from '@/components/tickets/TicketPurchaseFlow';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, MapPin, Ticket, User, Music, Star, QrCode, Upload, MailCheck, HelpCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, Music, Star, User, HelpCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -28,7 +27,7 @@ export default function Home() {
                 </div>
                 <div className="mt-8">
                     <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_theme(colors.primary)] hover:shadow-[0_0_30px_theme(colors.primary)]">
-                        <Link href="#tickets">Buy Pass</Link>
+                        <Link href="/tickets">Buy Pass</Link>
                     </Button>
                 </div>
             </div>
@@ -86,63 +85,6 @@ export default function Home() {
                   <Image src="https://picsum.photos/600/400" width={600} height={400} alt="Event Teaser 2" className="rounded-lg" data-ai-hint="concert crowd" />
                 </div>
             </div>
-        </section>
-
-        {/* Ticket Section */}
-        <section id="tickets" className="py-20">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-headline text-accent">Get Your Pass</h2>
-            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Follow the steps below to secure your entry. The entire process is designed to be simple and secure.
-            </p>
-            <div className="grid md:grid-cols-2 gap-12 items-start">
-              {/* Steps and Pass Details */}
-              <div>
-                <Card className="mb-8 bg-secondary/20 border-primary/30">
-                  <CardHeader>
-                    <CardTitle className="font-headline">Pass Options</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center p-4 rounded-md bg-muted">
-                        <div>
-                            <h3 className="font-bold text-lg flex items-center gap-2"><Ticket className="w-5 h-5 text-accent"/> General Pass</h3>
-                            <p className="text-sm text-muted-foreground">Access to the main event area.</p>
-                        </div>
-                        <div className="text-xl font-bold text-primary">₹999</div>
-                    </div>
-                    <div className="flex justify-between items-center p-4 rounded-md bg-muted">
-                        <div>
-                            <h3 className="font-bold text-lg flex items-center gap-2"><Star className="w-5 h-5 text-accent"/> VIP Pass</h3>
-                            <p className="text-sm text-muted-foreground">Express entry, VIP lounge & more.</p>
-                        </div>
-                        <div className="text-xl font-bold text-primary">₹2499</div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <h3 className="font-headline text-xl font-bold mb-4">Purchase Steps:</h3>
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <div className="pt-1"><QrCode className="w-6 h-6 text-accent"/></div>
-                    <div><span className="font-semibold text-white">1. Scan & Pay:</span> Use the QR code to complete your payment via any UPI app.</div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="pt-1"><Upload className="w-6 h-6 text-accent"/></div>
-                    <div><span className="font-semibold text-white">2. Fill Details & Upload:</span> Enter your name, email, and phone. Upload a clear screenshot of your payment showing the transaction ID.</div>
-                  </li>
-                   <li className="flex items-start gap-3">
-                    <div className="pt-1"><MailCheck className="w-6 h-6 text-accent"/></div>
-                    <div><span className="font-semibold text-white">3. Get Your Code:</span> After verification, you will receive a unique entry code (OTP) in your email. This is your ticket!</div>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Purchase Form Flow */}
-              <div className="bg-secondary/20 p-px rounded-lg shadow-2xl shadow-primary/20">
-                <TicketPurchaseFlow />
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* FAQs Section */}
