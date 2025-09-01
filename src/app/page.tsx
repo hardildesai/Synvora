@@ -60,8 +60,8 @@ export default function Home() {
         <section id="team" className="py-20 bg-black scroll-mt-20">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Meet The Team</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+            <div className="flex flex-wrap justify-center gap-8 max-w-7xl mx-auto">
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
                 <CardHeader>
                   <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 1" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
                   <CardTitle className="font-headline text-xl">Hardil Desai</CardTitle>
@@ -73,7 +73,7 @@ export default function Home() {
                   <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
                 </CardContent>
               </Card>
-              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
                 <CardHeader>
                   <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 2" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
                   <CardTitle className="font-headline text-xl">Amshith Nair</CardTitle>
@@ -85,7 +85,7 @@ export default function Home() {
                   <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
                 </CardContent>
               </Card>
-              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
                 <CardHeader>
                   <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 3" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
                   <CardTitle className="font-headline text-xl">Parth</CardTitle>
@@ -97,7 +97,7 @@ export default function Home() {
                   <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
                 </CardContent>
               </Card>
-              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
                 <CardHeader>
                   <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 4" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
                   <CardTitle className="font-headline text-xl">Vanshika</CardTitle>
@@ -109,46 +109,42 @@ export default function Home() {
                   <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
                 </CardContent>
               </Card>
-              <div className="lg:col-span-4 flex justify-center">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full lg:w-3/4">
-                    <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                        <CardHeader>
-                        <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 5" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
-                        <CardTitle className="font-headline text-xl">Nitya</CardTitle>
-                        <p className="text-sm text-primary font-semibold">Social Media</p>
-                        </CardHeader>
-                        <CardContent className="flex justify-center gap-4">
-                        <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        </CardContent>
-                    </Card>
-                    <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                        <CardHeader>
-                        <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 6" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
-                        <CardTitle className="font-headline text-xl">Preet</CardTitle>
-                        <p className="text-sm text-primary font-semibold">Promotion</p>
-                        </CardHeader>
-                        <CardContent className="flex justify-center gap-4">
-                        <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        </CardContent>
-                    </Card>
-                    <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary">
-                        <CardHeader>
-                        <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 7" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
-                        <CardTitle className="font-headline text-xl">Aaryan</CardTitle>
-                        <p className="text-sm text-primary font-semibold">Promotion</p>
-                        </CardHeader>
-                        <CardContent className="flex justify-center gap-4">
-                        <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
-                        </CardContent>
-                    </Card>
-                  </div>
-              </div>
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
+                  <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 5" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Nitya</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Social Media</p>
+                  </CardHeader>
+                  <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  </CardContent>
+              </Card>
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
+                  <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 6" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Preet</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Promotion</p>
+                  </CardHeader>
+                  <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  </CardContent>
+              </Card>
+              <Card className="text-center bg-card/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-primary/30 hover:border-primary w-full max-w-xs sm:w-auto">
+                  <CardHeader>
+                  <Image src="https://picsum.photos/200/200" width={120} height={120} alt="Team Member 7" className="rounded-full mx-auto mb-4 border-4 border-primary/50" data-ai-hint="person portrait" />
+                  <CardTitle className="font-headline text-xl">Aaryan</CardTitle>
+                  <p className="text-sm text-primary font-semibold">Promotion</p>
+                  </CardHeader>
+                  <CardContent className="flex justify-center gap-4">
+                  <Link href="#"><Mail className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Twitter className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  <Link href="#"><Linkedin className="w-6 h-6 text-muted-foreground hover:text-primary"/></Link>
+                  </CardContent>
+              </Card>
             </div>
           </div>
         </section>
