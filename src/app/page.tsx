@@ -16,7 +16,7 @@ export default function Home() {
         <div className="relative z-0">
           <HeroScroll>
             {/* Event Info Section */}
-            <section id="info" className="py-20">
+            <section id="info" className="py-20 scroll-mt-20">
               <div className="container px-4 md:px-6 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold font-headline text-accent mb-4">The Vision of Synvora</h2>
                 <p className="max-w-3xl mx-auto text-neutral-300 mb-12">
@@ -46,7 +46,7 @@ export default function Home() {
             </section>
 
             {/* Gallery Section */}
-            <section id="gallery" className="py-20 bg-secondary/20">
+            <section id="gallery" className="py-20 bg-secondary/20 scroll-mt-20">
                 <div className="container px-4 md:px-6">
                     <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Gallery & Aftermovie Teaser</h2>
                     <div className="grid md:grid-cols-2 gap-4 mt-8">
@@ -57,7 +57,7 @@ export default function Home() {
             </section>
 
             {/* Meet the Team Section */}
-            <section id="team" className="py-20 bg-black">
+            <section id="team" className="py-20 bg-black scroll-mt-20">
               <div className="container px-4 md:px-6">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-headline text-accent">Meet The Team</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -154,7 +154,7 @@ export default function Home() {
             </section>
 
             {/* FAQs Section */}
-            <section id="faq" className="py-20 bg-secondary/20">
+            <section id="faq" className="py-20 bg-secondary/20 scroll-mt-20">
               <div className="container px-4 md:px-6 max-w-3xl mx-auto">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 font-headline text-accent">
                   <HelpCircle className="inline-block w-8 h-8 mr-2" />
@@ -184,7 +184,7 @@ export default function Home() {
             </section>
             
             {/* Contact Section */}
-            <section id="contact" className="py-20 bg-black">
+            <section id="contact" className="py-20 bg-black scroll-mt-20">
               <div className="container px-4 md:px-6 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold font-headline text-accent mb-4">Get In Touch</h2>
                 <p className="max-w-2xl mx-auto text-neutral-300 mb-8">
