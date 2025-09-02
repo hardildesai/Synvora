@@ -50,17 +50,19 @@ export default function RegisterForm() {
       await updateProfile(user, { displayName: name });
 
       // Create user document in Firestore
-      await updateUserInFirestore(user, { name });
+      if (updateUserInFirestore) {
+        await updateUserInFirestore(user, { name });
+      }
 
       toast({ title: 'Account created successfully!' });
       router.push('/account');
 
     } catch (err: any) {
+      console.error("Registration Error:", err, "Error Code:", err.code);
       if (err.code === 'auth/email-already-in-use') {
         setError('An account with this email already exists.');
       } else {
-        setError('An unexpected error occurred. Please try again.');
-        console.error(err);
+        setError(`An unexpected error occurred. Please try again.`);
       }
     } finally {
       setLoading(false);
