@@ -20,7 +20,8 @@ import {
   CardTitle,
 } from '../ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Ticket, Users, Utensils } from 'lucide-react';
+import { Check, Ticket, Users, Utensils } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   passType: z.enum(['general-no-food', 'general-with-food', 'couples-with-food'], {
@@ -39,6 +40,8 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
     resolver: zodResolver(formSchema),
   });
 
+  const selectedPassType = form.watch('passType');
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -51,7 +54,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
             control={form.control}
             name="passType"
             render={({ field }) => (
-              <FormItem className="space-y-3">
+              <FormItem className="space-y-4">
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -64,8 +67,16 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general-no-food"
-                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
+                        className={cn(
+                          'relative flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer border-2 border-transparent transition-all duration-200 hover:border-primary/50',
+                          selectedPassType === 'general-no-food' && 'scale-[1.02] ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_20px_hsl(var(--primary)/0.4)] border-primary'
+                        )}
                       >
+                        {selectedPassType === 'general-no-food' && (
+                          <div className="absolute -top-3 -right-3 bg-primary rounded-full p-1.5 shadow-lg">
+                            <Check className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                        )}
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
                             <Ticket className="w-5 h-5 text-accent" /> General Pass
@@ -84,8 +95,16 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general-with-food"
-                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
+                         className={cn(
+                          'relative flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer border-2 border-transparent transition-all duration-200 hover:border-primary/50',
+                          selectedPassType === 'general-with-food' && 'scale-[1.02] ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_20px_hsl(var(--primary)/0.4)] border-primary'
+                        )}
                       >
+                         {selectedPassType === 'general-with-food' && (
+                          <div className="absolute -top-3 -right-3 bg-primary rounded-full p-1.5 shadow-lg">
+                            <Check className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                        )}
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
                             <Utensils className="w-5 h-5 text-accent" /> General Pass + Food
@@ -104,8 +123,16 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="couples-with-food"
-                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
+                        className={cn(
+                          'relative flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer border-2 border-transparent transition-all duration-200 hover:border-primary/50',
+                          selectedPassType === 'couples-with-food' && 'scale-[1.02] ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_20px_hsl(var(--primary)/0.4)] border-primary'
+                        )}
                       >
+                        {selectedPassType === 'couples-with-food' && (
+                           <div className="absolute -top-3 -right-3 bg-primary rounded-full p-1.5 shadow-lg">
+                            <Check className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                        )}
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
                             <Users className="w-5 h-5 text-accent" /> Couples Entry + Food
@@ -126,7 +153,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
           />
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full font-bold">
+          <Button type="submit" className="w-full font-bold" disabled={!selectedPassType}>
             Next: Your Details
           </Button>
         </CardFooter>
