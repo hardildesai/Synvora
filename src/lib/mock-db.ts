@@ -4,7 +4,7 @@
 // For this demo, we'll use an in-memory array to store data.
 // This data will be reset every time the server restarts.
 
-interface Registration {
+export interface Registration {
   id: string;
   name: string;
   email: string;
@@ -13,6 +13,7 @@ interface Registration {
   foodType: string;
   passType: string;
   transactionId: string;
+  paymentScreenshotDataUri: string;
   eventCode: string;
   submittedAt: Date;
 }
