@@ -10,17 +10,37 @@ import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
     const handleScroll = () => {
-      const threshold = window.innerHeight * 0.9;
+      const threshold = 50; // Simple scroll threshold
       setIsScrolled(window.scrollY > threshold);
     };
 
+    const heroCta = document.getElementById('heroBookBtn');
+    if (!heroCta) {
+      setIsHeroCtaVisible(false); // If no hero button, always show header button
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroCtaVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // CTA is "visible" if at least 10% is showing
+    );
+
+    observer.observe(heroCta);
     window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -49,20 +69,44 @@ const Header = () => {
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
           
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link href="/account">
-                  <User className="mr-2 h-4 w-4"/>
-                  My Account
-              </Link>
-            </Button>
-            <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-              <Link href="/login">
-                <Ticket className="mr-2 h-4 w-4" />
-                Book Tickets
-              </Link>
-            </Button>
-          </div>
+          <motion.div layout className="flex items-center gap-4">
+            <AnimatePresence>
+              {isLoggedIn ? (
+                  <Button variant="ghost" asChild>
+                    <Link href="/account">
+                        <User className="mr-2 h-4 w-4"/>
+                        My Account
+                    </Link>
+                  </Button>
+              ) : (
+                <Button variant="ghost" asChild>
+                  <Link href="/login">
+                      Login
+                  </Link>
+                </Button>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {!isHeroCtaVisible && (
+                <motion.div
+                  key="book-tickets-btn"
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
+                    <Link href="/tickets">
+                      <Ticket className="mr-2 h-4 w-4" />
+                      Book Tickets
+                    </Link>
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </nav>
       </div>
     </header>

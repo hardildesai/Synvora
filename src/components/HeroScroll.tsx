@@ -43,8 +43,8 @@ const HeroScroll = () => {
           </p>
           <CountdownTimer targetDate={eventDate} />
           <div className="mt-8">
-            <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
-              <Link href="/login">Book Your Tickets Now</Link>
+            <Button id="heroBookBtn" asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
+              <Link href="/tickets">Book Your Tickets Now</Link>
             </Button>
           </div>
         </div>
