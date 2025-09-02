@@ -69,53 +69,60 @@ const Header = () => {
           transition={transition}
           className="flex items-center gap-4"
         >
-          <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
-          <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
-          <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
-          <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
-          <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
-          
-          <AnimatePresence mode="popLayout">
-              {isLoggedIn ? (
-                <motion.div key="account-btn" layout>
-                  <Button variant="ghost" asChild>
-                    <Link href="/account">
-                        <User className="mr-2 h-4 w-4"/>
-                        My Account
-                    </Link>
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div key="login-btn" layout>
-                  <Button variant="ghost" asChild>
-                    <Link href="/login">
-                        Login
-                    </Link>
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <div className="relative">
-                <AnimatePresence>
-                {!isHeroCtaVisible && (
-                    <motion.div
-                    key="book-tickets-btn"
-                    variants={buttonVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={transition}
-                    >
-                    <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-                        <Link href="/tickets">
-                        <Ticket className="mr-2 h-4 w-4" />
-                        Book Tickets
-                        </Link>
+          <motion.div 
+            className="flex items-center gap-4" 
+            animate={{ filter: !isHeroCtaVisible ? 'blur(0px)' : 'blur(0px)' }}
+            transition={{ ...transition, delay: !isHeroCtaVisible ? 0.3 : 0 }}
+          >
+            <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
+            <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
+            <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
+            <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
+            <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
+            
+            <AnimatePresence mode="popLayout">
+                {isLoggedIn ? (
+                  <motion.div key="account-btn" layout>
+                    <Button variant="ghost" asChild>
+                      <Link href="/account">
+                          <User className="mr-2 h-4 w-4"/>
+                          My Account
+                      </Link>
                     </Button>
-                    </motion.div>
+                  </motion.div>
+                ) : (
+                  <motion.div key="login-btn" layout>
+                    <Button variant="ghost" asChild>
+                      <Link href="/login">
+                          Login
+                      </Link>
+                    </Button>
+                  </motion.div>
                 )}
-                </AnimatePresence>
-            </div>
+              </AnimatePresence>
+            </motion.div>
+
+            <motion.div layout>
+              <AnimatePresence>
+              {!isHeroCtaVisible && (
+                  <motion.div
+                  key="book-tickets-btn"
+                  variants={buttonVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  transition={transition}
+                  >
+                  <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
+                      <Link href="/tickets">
+                      <Ticket className="mr-2 h-4 w-4" />
+                      Book Tickets
+                      </Link>
+                  </Button>
+                  </motion.div>
+              )}
+              </AnimatePresence>
+            </motion.div>
         </motion.nav>
       </div>
     </header>
