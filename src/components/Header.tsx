@@ -16,35 +16,33 @@ const Header = () => {
 
   useEffect(() => {
     // Observer for the main "Book Tickets" button in the hero
-    const heroCtaEl = document.getElementById('heroBookBtn');
+    const heroCtaEl = document.getElementById('info'); // Changed from heroBookBtn
     if (!heroCtaEl) {
       setIsHeroCtaVisible(false);
-      return;
+    } else {
+      const ctaObserver = new IntersectionObserver(
+        ([entry]) => setIsHeroCtaVisible(entry.intersectionRatio < 0.3), // Becomes visible when #info is 30% visible
+        { threshold: 0.3 } 
+      );
+      ctaObserver.observe(heroCtaEl);
+       return () => ctaObserver.disconnect();
     }
-    const ctaObserver = new IntersectionObserver(
-      ([entry]) => setIsHeroCtaVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    ctaObserver.observe(heroCtaEl);
+  }, []);
 
+  useEffect(() => {
     // Observer for the main countdown timer in the hero
     const heroCountdownEl = document.getElementById('heroCountdown');
     if (heroCountdownEl) {
       const countdownObserver = new IntersectionObserver(
-        ([entry]) => setIsHeroCountdownVisible(entry.isIntersecting),
-        { threshold: 0.2 } // Timer is "visible" if at least 20% is showing
+        ([entry]) => setIsHeroCountdownVisible(entry.intersectionRatio > 0.25), // Visible if more than 25% is showing
+        { threshold: 0.25 } // 75% scrolled out
       );
       countdownObserver.observe(heroCountdownEl);
-       return () => {
-        ctaObserver.disconnect();
-        countdownObserver.disconnect();
-      };
+       return () => countdownObserver.disconnect();
+    } else {
+      setIsHeroCountdownVisible(false);
     }
-    
-    return () => {
-      ctaObserver.disconnect();
-    };
-  }, []);
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
