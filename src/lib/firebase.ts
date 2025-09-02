@@ -10,7 +10,6 @@ const firebaseConfig = {
   "storageBucket": "rhythmpass.firebasestorage.app",
   "apiKey": "AIzaSyBHCbLT7vzyXu3jJdSVY8JzdvChDJeEZS8",
   "authDomain": "rhythmpass.firebaseapp.com",
-  "measurementId": "",
   "messagingSenderId": "838786524087"
 };
 
