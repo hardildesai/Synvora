@@ -10,7 +10,6 @@ import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
   const eventDate = '2024-09-20T18:30:00';
 
@@ -68,14 +67,11 @@ const Header = () => {
         <motion.nav 
           layout
           transition={transition}
-          onLayoutAnimationStart={() => setIsAnimating(true)}
-          onLayoutAnimationComplete={() => setIsAnimating(false)}
           className="flex items-center gap-4"
         >
           <motion.div 
+            layout
             className="flex items-center gap-4" 
-            animate={{ filter: isAnimating ? 'blur(2px)' : 'blur(0px)' }}
-            transition={{ ...transition, delay: 0 }}
           >
             <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
             <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
@@ -105,8 +101,7 @@ const Header = () => {
               </AnimatePresence>
             </motion.div>
 
-            <motion.div layout>
-              <AnimatePresence>
+            <AnimatePresence>
               {!isHeroCtaVisible && (
                   <motion.div
                   key="book-tickets-btn"
@@ -125,7 +120,6 @@ const Header = () => {
                   </motion.div>
               )}
               </AnimatePresence>
-            </motion.div>
         </motion.nav>
       </div>
     </header>
