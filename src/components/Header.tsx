@@ -15,34 +15,26 @@ const Header = () => {
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    // Observer for the main "Book Tickets" button in the hero
-    const heroCtaEl = document.getElementById('info'); // Changed from heroBookBtn
-    if (!heroCtaEl) {
-      setIsHeroCtaVisible(false);
-    } else {
-      const ctaObserver = new IntersectionObserver(
-        ([entry]) => setIsHeroCtaVisible(entry.intersectionRatio < 0.35), // Becomes visible when #info is 35% visible
-        { threshold: 0.35 } 
-      );
-      ctaObserver.observe(heroCtaEl);
-       return () => ctaObserver.disconnect();
-    }
-  }, []);
-
-  useEffect(() => {
-    // Observer for the main countdown timer in the hero
+    // This observer now controls both the Book Tickets button and the countdown timer.
+    // It watches the main hero countdown.
     const heroCountdownEl = document.getElementById('heroCountdown');
     if (heroCountdownEl) {
-      const countdownObserver = new IntersectionObserver(
-        ([entry]) => setIsHeroCountdownVisible(entry.intersectionRatio > 0.30), // Visible if more than 30% is showing
-        { threshold: 0.30 } // 70% scrolled out
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const isVisible = entry.intersectionRatio > 0.30;
+          setIsHeroCountdownVisible(isVisible);
+          setIsHeroCtaVisible(isVisible); // Tie the CTA visibility to the same observer
+        },
+        { threshold: 0.30 } 
       );
-      countdownObserver.observe(heroCountdownEl);
-       return () => countdownObserver.disconnect();
+      observer.observe(heroCountdownEl);
+       return () => observer.disconnect();
     } else {
+      // Fallback if the element isn't on the page
       setIsHeroCountdownVisible(false);
+      setIsHeroCtaVisible(false);
     }
-  }, [])
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
