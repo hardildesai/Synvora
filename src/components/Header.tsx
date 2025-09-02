@@ -14,8 +14,8 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Threshold to hide elements, e.g., after scrolling 50px
-      const threshold = 50;
+      // Threshold is set to 90% of the viewport height. The hero section is 100vh.
+      const threshold = window.innerHeight * 0.9;
       setIsScrolled(window.scrollY > threshold);
     };
 
