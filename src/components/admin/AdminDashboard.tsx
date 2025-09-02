@@ -8,12 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getRegistrations } from '@/lib/mock-db';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Download } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Registration } from '@/lib/mock-db';
 import { Button } from '../ui/button';
 import Papa from 'papaparse';
@@ -74,9 +73,8 @@ export default function AdminDashboard({
   }, {} as Record<string, number>);
 
   return (
-    <div className="container py-12">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-headline font-bold">Admin Dashboard</h1>
+    <>
+      <div className="flex justify-end items-center mb-4">
         <Button onClick={handleExport} disabled={registrations.length === 0}>
           <Download className="mr-2 h-4 w-4" />
           Export to CSV
@@ -165,6 +163,6 @@ export default function AdminDashboard({
           )}
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
