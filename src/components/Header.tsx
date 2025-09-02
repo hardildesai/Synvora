@@ -10,6 +10,7 @@ import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
   const eventDate = '2024-09-20T18:30:00';
 
@@ -30,8 +31,8 @@ const Header = () => {
   }, []);
 
   const buttonVariants = {
-    hidden: { x: '110%' },
-    visible: { x: 0 },
+    hidden: { x: '110%', opacity: 1 },
+    visible: { x: 0, opacity: 1 },
   };
 
   const timerVariants = {
@@ -67,12 +68,14 @@ const Header = () => {
         <motion.nav 
           layout
           transition={transition}
+          onLayoutAnimationStart={() => setIsAnimating(true)}
+          onLayoutAnimationComplete={() => setIsAnimating(false)}
           className="flex items-center gap-4"
         >
           <motion.div 
             className="flex items-center gap-4" 
-            animate={{ filter: !isHeroCtaVisible ? 'blur(0px)' : 'blur(0px)' }}
-            transition={{ ...transition, delay: !isHeroCtaVisible ? 0.3 : 0 }}
+            animate={{ filter: isAnimating ? 'blur(2px)' : 'blur(0px)' }}
+            transition={{ ...transition, delay: 0 }}
           >
             <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
             <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
