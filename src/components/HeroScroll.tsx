@@ -41,7 +41,9 @@ const HeroScroll = () => {
           <p className="mt-4 max-w-[700px] mx-auto text-lg md:text-xl text-neutral-300 font-bold">
             Where Music Meets Experience
           </p>
-          <CountdownTimer targetDate={eventDate} />
+          <div id="heroCountdown">
+            <CountdownTimer targetDate={eventDate} />
+          </div>
           <div className="mt-8">
             <Button id="heroBookBtn" asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
               <Link href="/tickets">Book Your Tickets Now</Link>

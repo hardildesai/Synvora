@@ -9,37 +9,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isHeroCountdownVisible, setIsHeroCountdownVisible] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    const handleScroll = () => {
-      const threshold = 50; // Simple scroll threshold
-      setIsScrolled(window.scrollY > threshold);
-    };
-
-    const heroCta = document.getElementById('heroBookBtn');
-    if (!heroCta) {
-      setIsHeroCtaVisible(false); // If no hero button, always show header button
+    // Observer for the main "Book Tickets" button in the hero
+    const heroCtaEl = document.getElementById('heroBookBtn');
+    if (!heroCtaEl) {
+      setIsHeroCtaVisible(false);
       return;
     }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsHeroCtaVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 } // CTA is "visible" if at least 10% is showing
+    const ctaObserver = new IntersectionObserver(
+      ([entry]) => setIsHeroCtaVisible(entry.isIntersecting),
+      { threshold: 0.1 }
     );
+    ctaObserver.observe(heroCtaEl);
 
-    observer.observe(heroCta);
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-
+    // Observer for the main countdown timer in the hero
+    const heroCountdownEl = document.getElementById('heroCountdown');
+    if (heroCountdownEl) {
+      const countdownObserver = new IntersectionObserver(
+        ([entry]) => setIsHeroCountdownVisible(entry.isIntersecting),
+        { threshold: 0.1 } // Timer is "visible" if at least 10% is showing
+      );
+      countdownObserver.observe(heroCountdownEl);
+       return () => {
+        ctaObserver.disconnect();
+        countdownObserver.disconnect();
+      };
+    }
+    
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
+      ctaObserver.disconnect();
     };
   }, []);
 
@@ -48,13 +51,13 @@ const Header = () => {
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center gap-6">
           <Logo />
-          <AnimatePresence>
-            {isScrolled && (
+           <AnimatePresence>
+            {!isHeroCountdownVisible && (
               <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="hidden md:flex"
               >
                 <CountdownTimer targetDate={eventDate} compact />
@@ -91,11 +94,10 @@ const Header = () => {
               {!isHeroCtaVisible && (
                 <motion.div
                   key="book-tickets-btn"
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
                   <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
                     <Link href="/tickets">
