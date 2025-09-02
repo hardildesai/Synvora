@@ -10,31 +10,39 @@ import CountdownTimer from './CountdownTimer';
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
-  const [isHeroCountdownVisible, setIsHeroCountdownVisible] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    // This observer now controls both the Book Tickets button and the countdown timer.
-    // It watches the main hero countdown.
     const heroCountdownEl = document.getElementById('heroCountdown');
     if (heroCountdownEl) {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          const isVisible = entry.intersectionRatio > 0.98;
-          setIsHeroCountdownVisible(isVisible);
-          setIsHeroCtaVisible(isVisible); // Tie the CTA visibility to the same observer
+          setIsHeroCtaVisible(entry.isIntersecting);
         },
         { threshold: 0.98 } 
       );
       observer.observe(heroCountdownEl);
        return () => observer.disconnect();
     } else {
-      // Fallback if the element isn't on the page
-      setIsHeroCountdownVisible(false);
       setIsHeroCtaVisible(false);
     }
   }, []);
+
+  const buttonVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const timerVariants = {
+    hidden: { opacity: 0, filter: 'blur(5px)' },
+    visible: { opacity: 1, filter: 'blur(0px)' },
+  };
+
+  const transition = {
+    duration: 0.4,
+    ease: "easeInOut",
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -42,12 +50,13 @@ const Header = () => {
         <div className="flex items-center gap-6">
           <Logo />
            <AnimatePresence>
-            {!isHeroCountdownVisible && (
+            {!isHeroCtaVisible && (
               <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                variants={timerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition={transition}
                 className="hidden md:flex"
               >
                 <CountdownTimer targetDate={eventDate} compact />
@@ -62,7 +71,7 @@ const Header = () => {
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
           
-          <motion.div layout className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <AnimatePresence>
               {isLoggedIn ? (
                   <Button variant="ghost" asChild>
@@ -84,10 +93,11 @@ const Header = () => {
               {!isHeroCtaVisible && (
                 <motion.div
                   key="book-tickets-btn"
-                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  variants={buttonVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  transition={transition}
                 >
                   <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
                     <Link href="/tickets">
@@ -98,7 +108,7 @@ const Header = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         </nav>
       </div>
     </header>
