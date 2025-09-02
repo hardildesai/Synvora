@@ -3,14 +3,15 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// TODO: Add your own Firebase configuration from your project settings
+// Your project's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  "projectId": "rhythmpass",
+  "appId": "1:838786524087:web:31ccdce567d221e82afe32",
+  "storageBucket": "rhythmpass.firebasestorage.app",
+  "apiKey": "AIzaSyBHCbLT7vzyXu3jJdSVY8JzdvChDJeEZS8",
+  "authDomain": "rhythmpass.firebaseapp.com",
+  "measurementId": "",
+  "messagingSenderId": "838786524087"
 };
 
 // Initialize Firebase
