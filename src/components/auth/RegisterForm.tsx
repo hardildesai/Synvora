@@ -61,6 +61,8 @@ export default function RegisterForm() {
       console.error("Registration Error:", err, "Error Code:", err.code);
       if (err.code === 'auth/email-already-in-use') {
         setError('An account with this email already exists.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Please enter a valid email address.');
       } else {
         setError(`An unexpected error occurred. Please try again.`);
       }
