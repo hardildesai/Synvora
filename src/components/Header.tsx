@@ -18,13 +18,16 @@ const Header = () => {
     if (heroCountdownEl) {
       const observer = new IntersectionObserver(
         ([entry]) => {
+          // Use a stable toggle to prevent flicker on rapid scrolls
           setIsHeroCtaVisible(entry.isIntersecting);
         },
+        // Trigger when 98% of the element is visible
         { threshold: 0.98 } 
       );
       observer.observe(heroCountdownEl);
-       return () => observer.disconnect();
+      return () => observer.disconnect();
     } else {
+      // Fallback if the hero countdown isn't on the page for some reason
       setIsHeroCtaVisible(false);
     }
   }, []);
@@ -39,7 +42,8 @@ const Header = () => {
     visible: { opacity: 1, filter: 'blur(0px)' },
   };
 
-  const transition = {
+  // This unified transition will apply to all layout changes in the nav
+  const navTransition = {
     duration: 0.4,
     ease: "easeInOut",
   };
@@ -56,7 +60,7 @@ const Header = () => {
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                transition={transition}
+                transition={navTransition}
                 className="hidden md:flex"
               >
                 <CountdownTimer targetDate={eventDate} compact />
@@ -64,17 +68,22 @@ const Header = () => {
             )}
           </AnimatePresence>
         </div>
+        
+        {/* The parent <nav> now orchestrates the layout animation */}
         <motion.nav 
           layout
-          transition={transition}
+          transition={navTransition}
           className="flex items-center gap-4"
         >
-            <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
-            <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
-            <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
-            <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
-            <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
+            <motion.div layout className="hidden md:flex items-center gap-4">
+              <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Info</Link>
+              <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Gallery</Link>
+              <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Team</Link>
+              <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">FAQ</Link>
+              <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Contact</Link>
+            </motion.div>
             
+            {/* The auth button and book tickets button are siblings, so `layout` can animate them */}
             <AnimatePresence mode="popLayout">
                 {isLoggedIn ? (
                   <motion.div key="account-btn" layout>
@@ -94,27 +103,27 @@ const Header = () => {
                     </Button>
                   </motion.div>
                 )}
-              </AnimatePresence>
+            </AnimatePresence>
 
             <AnimatePresence>
               {!isHeroCtaVisible && (
-                  <motion.div
+                <motion.div
                   key="book-tickets-btn"
                   variants={buttonVariants}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  transition={transition}
-                  >
+                  transition={navTransition}
+                >
                   <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
                       <Link href="/tickets">
                       <Ticket className="mr-2 h-4 w-4" />
                       Book Tickets
                       </Link>
                   </Button>
-                  </motion.div>
+                </motion.div>
               )}
-              </AnimatePresence>
+            </AnimatePresence>
         </motion.nav>
       </div>
     </header>
