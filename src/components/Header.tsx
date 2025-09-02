@@ -64,28 +64,35 @@ const Header = () => {
             )}
           </AnimatePresence>
         </div>
-        <nav className="flex items-center gap-4">
+        <motion.nav 
+          layout 
+          transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.4 }}
+          className="flex items-center gap-4"
+        >
           <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
           <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
           <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
           
-          <div className="flex items-center gap-4">
-            <AnimatePresence>
+          <AnimatePresence mode="popLayout">
               {isLoggedIn ? (
+                <motion.div key="account-btn" layout>
                   <Button variant="ghost" asChild>
                     <Link href="/account">
                         <User className="mr-2 h-4 w-4"/>
                         My Account
                     </Link>
                   </Button>
+                </motion.div>
               ) : (
-                <Button variant="ghost" asChild>
-                  <Link href="/login">
-                      Login
-                  </Link>
-                </Button>
+                <motion.div key="login-btn" layout>
+                  <Button variant="ghost" asChild>
+                    <Link href="/login">
+                        Login
+                    </Link>
+                  </Button>
+                </motion.div>
               )}
             </AnimatePresence>
 
@@ -93,6 +100,7 @@ const Header = () => {
               {!isHeroCtaVisible && (
                 <motion.div
                   key="book-tickets-btn"
+                  layout
                   variants={buttonVariants}
                   initial="hidden"
                   animate="visible"
@@ -108,8 +116,7 @@ const Header = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </nav>
+        </motion.nav>
       </div>
     </header>
   );
