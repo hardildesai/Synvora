@@ -30,8 +30,8 @@ const Header = () => {
   }, []);
 
   const buttonVariants = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0 },
+    hidden: { x: '110%' },
+    visible: { x: 0 },
   };
 
   const timerVariants = {
@@ -65,8 +65,8 @@ const Header = () => {
           </AnimatePresence>
         </div>
         <motion.nav 
-          layout 
-          transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.4 }}
+          layout
+          transition={transition}
           className="flex items-center gap-4"
         >
           <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
@@ -95,27 +95,27 @@ const Header = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            <AnimatePresence>
-              {!isHeroCtaVisible && (
-                <motion.div
-                  key="book-tickets-btn"
-                  layout
-                  variants={buttonVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  transition={transition}
-                >
-                  <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-                    <Link href="/tickets">
-                      <Ticket className="mr-2 h-4 w-4" />
-                      Book Tickets
-                    </Link>
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div className="relative">
+                <AnimatePresence>
+                {!isHeroCtaVisible && (
+                    <motion.div
+                    key="book-tickets-btn"
+                    variants={buttonVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    transition={transition}
+                    >
+                    <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
+                        <Link href="/tickets">
+                        <Ticket className="mr-2 h-4 w-4" />
+                        Book Tickets
+                        </Link>
+                    </Button>
+                    </motion.div>
+                )}
+                </AnimatePresence>
+            </div>
         </motion.nav>
       </div>
     </header>
