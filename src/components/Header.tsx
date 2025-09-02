@@ -14,13 +14,12 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Threshold is set to 90% of the viewport height. The hero section is 100vh.
       const threshold = window.innerHeight * 0.9;
       setIsScrolled(window.scrollY > threshold);
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on initial load
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -50,30 +49,20 @@ const Header = () => {
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
           
-          <AnimatePresence>
-            {isScrolled && (
-               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-                className="flex items-center gap-4"
-              >
-                <Button variant="ghost" asChild>
-                  <Link href="/account">
-                      <User className="mr-2 h-4 w-4"/>
-                      My Account
-                  </Link>
-                </Button>
-                <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-                  <Link href="/login">
-                    <Ticket className="mr-2 h-4 w-4" />
-                    Book Tickets
-                  </Link>
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" asChild>
+              <Link href="/account">
+                  <User className="mr-2 h-4 w-4"/>
+                  My Account
+              </Link>
+            </Button>
+            <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
+              <Link href="/login">
+                <Ticket className="mr-2 h-4 w-4" />
+                Book Tickets
+              </Link>
+            </Button>
+          </div>
         </nav>
       </div>
     </header>
