@@ -14,8 +14,8 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Threshold to hide elements, e.g., after scrolling 90% of the viewport height
-      const threshold = window.innerHeight * 0.9;
+      // Threshold to hide elements, e.g., after scrolling 50px
+      const threshold = 50;
       setIsScrolled(window.scrollY > threshold);
     };
 
@@ -28,19 +28,8 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center gap-6">
+          <Logo />
           <AnimatePresence>
-            {!isScrolled && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Logo />
-              </motion.div>
-            )}
-          </AnimatePresence>
-           <AnimatePresence>
             {isScrolled && (
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
