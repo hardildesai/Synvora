@@ -5,12 +5,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your project's Firebase configuration
 const firebaseConfig = {
-  "projectId": "rhythmpass",
-  "appId": "1:838786524087:web:31ccdce567d221e82afe32",
-  "storageBucket": "rhythmpass.firebasestorage.app",
-  "apiKey": "AIzaSyBHCbLT7vzyXu3jJdSVY8JzdvChDJeEZS8",
-  "authDomain": "rhythmpass.firebaseapp.com",
-  "messagingSenderId": "838786524087"
+  projectId: "rhythmpass",
+  appId: "1:838786524087:web:31ccdce567d221e82afe32",
+  storageBucket: "rhythmpass.firebasestorage.app",
+  apiKey: "AIzaSyBHCbLT7vzyXu3jJdSVY8JzdvChDJeEZS8",
+  authDomain: "rhythmpass.firebaseapp.com",
+  messagingSenderId: "838786524087"
 };
 
 // Initialize Firebase
