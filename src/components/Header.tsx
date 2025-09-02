@@ -21,11 +21,11 @@ const Header = () => {
     if (heroCountdownEl) {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          const isVisible = entry.intersectionRatio > 0.68;
+          const isVisible = entry.intersectionRatio > 0.98;
           setIsHeroCountdownVisible(isVisible);
           setIsHeroCtaVisible(isVisible); // Tie the CTA visibility to the same observer
         },
-        { threshold: 0.68 } 
+        { threshold: 0.98 } 
       );
       observer.observe(heroCountdownEl);
        return () => observer.disconnect();
