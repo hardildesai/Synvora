@@ -1,18 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, MapPin, Music, Star, User, HelpCircle, Mail, Twitter, Linkedin } from 'lucide-react';
+import { Calendar, Clock, MapPin, Mail, Twitter, Linkedin, HelpCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import HeroScroll from '@/components/HeroScroll';
-import CountdownTimer from '@/components/CountdownTimer';
 
 export default function Home() {
-  const eventDate = '2024-09-20T18:30:00';
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      <main className="flex-grow">
+      <main className="relative z-0">
         <HeroScroll />
         
         {/* Event Info Section */}

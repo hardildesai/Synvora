@@ -58,7 +58,7 @@ const Header = () => {
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
                 <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-                  <Link href="/tickets">
+                  <Link href="/login">
                     <Ticket className="mr-2 h-4 w-4" />
                     Book Tickets
                   </Link>

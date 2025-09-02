@@ -34,7 +34,7 @@ const HeroScroll = () => {
         }}
         className="top-0 flex h-screen w-full flex-col items-center justify-center"
       >
-        <div className="container relative px-4 md:px-6 text-center">
+        <div className="container relative px-4 md:px-6 text-center pb-24">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline text-white drop-shadow-[0_2px_10px_hsl(var(--primary))]">
             Synvora
           </h1>
@@ -44,7 +44,7 @@ const HeroScroll = () => {
           <CountdownTimer targetDate={eventDate} />
           <div className="mt-8">
             <Button asChild size="lg" className="font-bold text-lg px-8 py-6 transition-transform transform hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary))] hover:shadow-[0_0_30px_hsl(var(--primary))]">
-              <Link href="/tickets">Book Your Tickets Now</Link>
+              <Link href="/login">Book Your Tickets Now</Link>
             </Button>
           </div>
         </div>
