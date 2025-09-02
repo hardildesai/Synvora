@@ -64,7 +64,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general-no-food"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
+                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="general-with-food"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
+                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -104,7 +104,7 @@ export default function PassSelectionForm({ onSubmit }: PassSelectionFormProps) 
                       </FormControl>
                       <FormLabel
                         htmlFor="couples-with-food"
-                        className="flex justify-between items-center p-4 rounded-md bg-muted/50 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted data-[state=checked]:ring-primary data-[state=checked]:bg-muted"
+                        className="flex justify-between items-center p-4 rounded-lg bg-muted/30 cursor-pointer ring-2 ring-transparent transition-all hover:bg-muted/60 data-[state=checked]:ring-primary data-[state=checked]:bg-primary/10 data-[state=checked]:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
                       >
                         <div>
                           <h3 className="font-bold text-lg flex items-center gap-2">
