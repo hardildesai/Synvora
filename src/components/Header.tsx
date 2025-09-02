@@ -3,14 +3,18 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import Logo from './Logo';
-import { Ticket, User } from 'lucide-react';
+import { Ticket, User, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CountdownTimer from './CountdownTimer';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth state
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
@@ -18,19 +22,21 @@ const Header = () => {
     if (heroCountdownEl) {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          // Use a stable toggle to prevent flicker on rapid scrolls
           setIsHeroCtaVisible(entry.isIntersecting);
         },
-        // Trigger when 98% of the element is visible
         { threshold: 0.98 } 
       );
       observer.observe(heroCountdownEl);
       return () => observer.disconnect();
     } else {
-      // Fallback if the hero countdown isn't on the page for some reason
       setIsHeroCtaVisible(false);
     }
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+  };
 
   const buttonVariants = {
     hidden: { x: '110%', opacity: 1 },
@@ -42,7 +48,6 @@ const Header = () => {
     visible: { opacity: 1, filter: 'blur(0px)' },
   };
 
-  // This unified transition will apply to all layout changes in the nav
   const navTransition = {
     duration: 0.4,
     ease: "easeInOut",
@@ -69,7 +74,6 @@ const Header = () => {
           </AnimatePresence>
         </div>
         
-        {/* The parent <nav> now orchestrates the layout animation */}
         <motion.nav 
           layout
           transition={navTransition}
@@ -83,25 +87,29 @@ const Header = () => {
               <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Contact</Link>
             </motion.div>
             
-            {/* The auth button and book tickets button are siblings, so `layout` can animate them */}
             <AnimatePresence mode="popLayout">
-                {isLoggedIn ? (
-                  <motion.div key="account-btn" layout>
-                    <Button variant="ghost" asChild>
-                      <Link href="/account">
-                          <User className="mr-2 h-4 w-4"/>
-                          My Account
-                      </Link>
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div key="login-btn" layout>
-                    <Button variant="ghost" asChild>
-                      <Link href="/login">
-                          Login
-                      </Link>
-                    </Button>
-                  </motion.div>
+                {!loading && (
+                  user ? (
+                    <motion.div key="account-btn" layout className="flex items-center gap-2">
+                      <Button variant="ghost" asChild>
+                        <Link href="/account">
+                            <User className="mr-2 h-4 w-4"/>
+                            My Account
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={handleLogout} title="Logout">
+                          <LogOut className="h-4 w-4"/>
+                      </Button>
+                    </motion.div>
+                  ) : (
+                    <motion.div key="login-btn" layout>
+                      <Button variant="ghost" asChild>
+                        <Link href="/login">
+                            Login
+                        </Link>
+                      </Button>
+                    </motion.div>
+                  )
                 )}
             </AnimatePresence>
 

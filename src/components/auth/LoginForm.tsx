@@ -1,25 +1,64 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginForm() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // In a real app, you'd have validation and an API call here.
-    // For this mock, we'll just redirect.
-    router.push('/tickets');
+    setError(null);
+    setLoading(true);
+
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      if (methods.length === 0) {
+        setError('Account does not exist. Please sign up.');
+        setLoading(false);
+        return;
+      }
+
+      await signInWithEmailAndPassword(auth, email, password);
+      toast({ title: 'Login successful!' });
+      router.push('/account');
+
+    } catch (err: any) {
+      if (err.code === 'auth/wrong-password') {
+        setError('Incorrect password. Try again.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+        console.error(err);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Card className="w-full max-w-md shadow-2xl">
+    <Card className="w-full max-w-md shadow-2xl bg-card/80 backdrop-blur-sm border-primary/20">
       <form onSubmit={handleLogin}>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Welcome Back!</CardTitle>
@@ -30,19 +69,45 @@ export default function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input id="email" type="email" placeholder="m@example.com" required className="pl-10" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                className="pl-10"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input id="password" type="password" required className="pl-10" />
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                className="pl-10 pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
             </div>
           </div>
+          {error && <p className="text-sm text-destructive text-center">{error}</p>}
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full font-bold">Log In</Button>
+          <Button type="submit" className="w-full font-bold" disabled={loading}>
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Log In
+          </Button>
           <p className="text-sm text-muted-foreground">
             Don't have an account?{' '}
             <Button variant="link" asChild className="p-0">
