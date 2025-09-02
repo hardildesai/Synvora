@@ -21,8 +21,8 @@ const Header = () => {
       setIsHeroCtaVisible(false);
     } else {
       const ctaObserver = new IntersectionObserver(
-        ([entry]) => setIsHeroCtaVisible(entry.intersectionRatio < 0.3), // Becomes visible when #info is 30% visible
-        { threshold: 0.3 } 
+        ([entry]) => setIsHeroCtaVisible(entry.intersectionRatio < 0.35), // Becomes visible when #info is 35% visible
+        { threshold: 0.35 } 
       );
       ctaObserver.observe(heroCtaEl);
        return () => ctaObserver.disconnect();
@@ -34,8 +34,8 @@ const Header = () => {
     const heroCountdownEl = document.getElementById('heroCountdown');
     if (heroCountdownEl) {
       const countdownObserver = new IntersectionObserver(
-        ([entry]) => setIsHeroCountdownVisible(entry.intersectionRatio > 0.25), // Visible if more than 25% is showing
-        { threshold: 0.25 } // 75% scrolled out
+        ([entry]) => setIsHeroCountdownVisible(entry.intersectionRatio > 0.30), // Visible if more than 30% is showing
+        { threshold: 0.30 } // 70% scrolled out
       );
       countdownObserver.observe(heroCountdownEl);
        return () => countdownObserver.disconnect();
