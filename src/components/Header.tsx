@@ -69,10 +69,6 @@ const Header = () => {
           transition={transition}
           className="flex items-center gap-4"
         >
-          <motion.div 
-            layout
-            className="flex items-center gap-4" 
-          >
             <Link href="/#info" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Info</Link>
             <Link href="/#gallery" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Gallery</Link>
             <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
@@ -99,7 +95,6 @@ const Header = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
 
             <AnimatePresence>
               {!isHeroCtaVisible && (
