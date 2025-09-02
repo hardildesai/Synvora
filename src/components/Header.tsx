@@ -32,7 +32,7 @@ const Header = () => {
     if (heroCountdownEl) {
       const countdownObserver = new IntersectionObserver(
         ([entry]) => setIsHeroCountdownVisible(entry.isIntersecting),
-        { threshold: 0.1 } // Timer is "visible" if at least 10% is showing
+        { threshold: 0.2 } // Timer is "visible" if at least 20% is showing
       );
       countdownObserver.observe(heroCountdownEl);
        return () => {
