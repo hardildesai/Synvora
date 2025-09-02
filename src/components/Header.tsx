@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import Logo from './Logo';
-import { Ticket } from 'lucide-react';
+import { Ticket, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CountdownTimer from './CountdownTimer';
@@ -49,14 +49,22 @@ const Header = () => {
           <Link href="/#team" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Team</Link>
           <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">FAQ</Link>
           <Link href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary hidden md:block">Contact</Link>
+          
           <AnimatePresence>
             {isScrolled && (
-              <motion.div
+               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
+                className="flex items-center gap-4"
               >
+                <Button variant="ghost" asChild>
+                  <Link href="/account">
+                      <User className="mr-2 h-4 w-4"/>
+                      My Account
+                  </Link>
+                </Button>
                 <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
                   <Link href="/login">
                     <Ticket className="mr-2 h-4 w-4" />
