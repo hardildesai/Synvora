@@ -7,7 +7,6 @@ import { Ticket, Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import CountdownTimer from './CountdownTimer';
 
 const navItems = [
   { href: '/', label: 'Home', targetId: 'hero' },
@@ -18,37 +17,34 @@ const navItems = [
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
-  const [isHeroCountdownVisible, setIsHeroCountdownVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState('/');
   
   const observerRef = useRef<IntersectionObserver | null>(null);
-
   const pathname = usePathname();
-  const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    // Ensure this only runs on the client
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || pathname !== '/') {
+        setActivePath(pathname);
+        setIsHeroCtaVisible(false);
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+        return;
+    }
 
-    // Disconnect previous observer if it exists
     if (observerRef.current) {
         observerRef.current.disconnect();
     }
 
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
         entries.forEach(entry => {
-            const id = entry.target.id;
-            
-            if (id === 'heroBookBtn') {
+            if (entry.target.id === 'heroBookBtn') {
                 setIsHeroCtaVisible(entry.isIntersecting);
-            }
-            if (id === 'heroCountdown') {
-                setIsHeroCountdownVisible(entry.isIntersecting);
             }
 
             if(entry.isIntersecting) {
-                const navItem = navItems.find(item => item.targetId === id);
+                const navItem = navItems.find(item => item.targetId === entry.target.id);
                 if (navItem) {
                     setActivePath(navItem.href);
                 }
@@ -56,40 +52,25 @@ const Header = () => {
         });
     };
     
-    // Set initial state based on current path
-    if (pathname !== '/') {
-        setActivePath(pathname);
-        setIsHeroCtaVisible(false);
-        setIsHeroCountdownVisible(false);
-        return; // Don't set up observers on non-home pages
-    }
-    
-    // Set initial visibility on mount for home page
-    const heroCtaEl = document.getElementById('heroBookBtn');
-    setIsHeroCtaVisible(!!(heroCtaEl && heroCtaEl.getBoundingClientRect().top < window.innerHeight && heroCtaEl.getBoundingClientRect().bottom > 0));
-    
-    const heroCountdownEl = document.getElementById('heroCountdown');
-    setIsHeroCountdownVisible(!!(heroCountdownEl && heroCountdownEl.getBoundingClientRect().top < window.innerHeight && heroCountdownEl.getBoundingClientRect().bottom > 0));
-
-
     observerRef.current = new IntersectionObserver(handleIntersect, { 
         rootMargin: '-50% 0px -50% 0px',
         threshold: 0,
     });
     
-    // Observe all target elements
-    navItems.forEach(item => {
-        if (item.targetId) {
-            const element = document.getElementById(item.targetId);
-            if (element) {
-                observerRef.current?.observe(element);
-            }
-        }
-    });
+    const elementsToObserve = navItems
+      .map(item => item.targetId)
+      .concat('heroBookBtn')
+      .map(id => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
 
-    if (heroCtaEl) observerRef.current.observe(heroCtaEl);
-    if (heroCountdownEl) observerRef.current.observe(heroCountdownEl);
+    elementsToObserve.forEach(el => observerRef.current?.observe(el));
 
+    // Initial check
+    const heroCtaEl = document.getElementById('heroBookBtn');
+    if (heroCtaEl) {
+        setIsHeroCtaVisible(heroCtaEl.getBoundingClientRect().top < window.innerHeight && heroCtaEl.getBoundingClientRect().bottom > 0);
+    }
+    
 
     return () => {
         if (observerRef.current) {
@@ -126,20 +107,8 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
           <div className="flex items-center gap-6 flex-1">
             <Logo />
-            <div className="flex-1 hidden md:flex justify-start min-w-[150px]">
-              <AnimatePresence>
-                  {!isHeroCountdownVisible && (
-                      <motion.div
-                          key="compact-countdown"
-                          initial={{ opacity: 0, filter: 'blur(5px)' }}
-                          animate={{ opacity: 1, filter: 'blur(0px)' }}
-                          exit={{ opacity: 0, filter: 'blur(5px)' }}
-                          transition={{ duration: 0.3, ease: 'easeOut' }}
-                      >
-                          <CountdownTimer targetDate={eventDate} compact={true} />
-                      </motion.div>
-                  )}
-              </AnimatePresence>
+            <div className="flex-1 hidden md:flex justify-start">
+              {/* Timer placeholder removed */}
             </div>
           </div>
           
