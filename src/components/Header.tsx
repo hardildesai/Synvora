@@ -7,6 +7,7 @@ import { Ticket, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import CountdownTimer from './CountdownTimer';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -16,32 +17,46 @@ const navItems = [
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isHeroCountdownVisible, setIsHeroCountdownVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState('/');
 
   const pathname = usePathname();
+  const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
     setActivePath(pathname);
-    // For pages other than home, the CTA should always be visible in the header
     if (pathname !== '/') {
       setIsHeroCtaVisible(false);
+      setIsHeroCountdownVisible(false);
       return;
     }
-  
+
     const heroCtaEl = document.getElementById('heroBookBtn');
-    if (heroCtaEl) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          setIsHeroCtaVisible(entry.isIntersecting);
-        },
-        { threshold: 0.1 } 
-      );
-      observer.observe(heroCtaEl);
-      return () => observer.disconnect();
-    } else {
-       setIsHeroCtaVisible(false);
-    }
+    const heroCountdownEl = document.getElementById('heroCountdown');
+
+    const ctaObserver = heroCtaEl ? new IntersectionObserver(
+      ([entry]) => setIsHeroCtaVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    ) : null;
+    
+    const countdownObserver = heroCountdownEl ? new IntersectionObserver(
+        ([entry]) => setIsHeroCountdownVisible(entry.isIntersecting),
+        { threshold: 0.1 }
+    ) : null;
+
+    if (heroCtaEl && ctaObserver) ctaObserver.observe(heroCtaEl);
+    if (heroCountdownEl && countdownObserver) countdownObserver.observe(heroCountdownEl);
+    
+    // Initial check
+    setIsHeroCtaVisible(!heroCtaEl || heroCtaEl.getBoundingClientRect().top < window.innerHeight);
+    setIsHeroCountdownVisible(!heroCountdownEl || heroCountdownEl.getBoundingClientRect().top < window.innerHeight);
+
+
+    return () => {
+      if (heroCtaEl && ctaObserver) ctaObserver.disconnect();
+      if (heroCountdownEl && countdownObserver) countdownObserver.disconnect();
+    };
   }, [pathname]);
 
   useEffect(() => {
@@ -56,7 +71,23 @@ const Header = () => {
     <>
       <header className="fixed top-4 inset-x-0 z-50 max-w-screen-xl mx-auto px-4">
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
-          <Logo />
+          <div className="flex items-center gap-6">
+            <Logo />
+            <AnimatePresence>
+                {!isHeroCountdownVisible && (
+                     <motion.div
+                        key="compact-countdown"
+                        initial={{ opacity: 0, scale: 0.9, filter: 'blur(5px)' }}
+                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, scale: 0.9, filter: 'blur(5px)' }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
+                        className="hidden md:block"
+                     >
+                        <CountdownTimer targetDate={eventDate} compact={true} />
+                     </motion.div>
+                )}
+            </AnimatePresence>
+          </div>
           
           <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
             {navItems.map((item) => (
