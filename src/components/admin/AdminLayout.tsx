@@ -39,15 +39,15 @@ import Logo from '../Logo';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/admin', icon: LayoutDashboard, label: 'Overview' },
-  { href: '/admin/orders', icon: Ticket, label: 'Tickets / Orders' },
-  { href: '/admin/payments', icon: CreditCard, label: 'Payments / Verification' },
-  { href: '/admin/attendees', icon: Users, label: 'Attendees' },
-  { href: '/admin/analytics', icon: BarChart, label: 'Analytics' },
-  { href: '/admin/gate-mode', icon: QrCode, label: 'Gate Mode' },
-  { href: '/admin/messages', icon: MessageSquare, label: 'Messages / Broadcasts' },
-  { href: '/admin/team', icon: Shield, label: 'Team & Roles' },
-  { href: '/admin/settings', icon: Settings, label: 'Settings & Integrations' },
+  { href: '/synmin', icon: LayoutDashboard, label: 'Overview' },
+  { href: '/synmin/orders', icon: Ticket, label: 'Tickets / Orders' },
+  { href: '/synmin/payments', icon: CreditCard, label: 'Payments / Verification' },
+  { href: '/synmin/attendees', icon: Users, label: 'Attendees' },
+  { href: '/synmin/analytics', icon: BarChart, label: 'Analytics' },
+  { href: '/synmin/gate-mode', icon: QrCode, label: 'Gate Mode' },
+  { href: '/synmin/messages', icon: MessageSquare, label: 'Messages / Broadcasts' },
+  { href: '/synmin/team', icon: Shield, label: 'Team & Roles' },
+  { href: '/synmin/settings', icon: Settings, label: 'Settings & Integrations' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

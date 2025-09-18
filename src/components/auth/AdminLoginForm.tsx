@@ -18,7 +18,7 @@ export default function AdminLoginForm() {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (email === 'info.synvora@gmail.com' && password === 'Synvora@hapa20') {
-      router.push('/admin');
+      router.push('/synmin');
     } else {
       toast({
         variant: 'destructive',
