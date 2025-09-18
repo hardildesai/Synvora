@@ -11,6 +11,7 @@ import CountdownTimer from './CountdownTimer';
 
 const navItems = [
   { href: '/', label: 'Home', targetId: 'hero' },
+  { href: '/#lineup', label: 'Lineup', targetId: 'lineup' },
   { href: '/#gallery', label: 'Gallery', targetId: 'gallery' },
   { href: '/#faq', label: 'FAQ', targetId: 'faq' },
 ];
@@ -69,9 +70,11 @@ const Header = () => {
         
         // Add section trackers for active nav link
         navItems.forEach(item => {
-            const element = document.getElementById(item.targetId);
-            if (element) {
-                observerRef.current?.observe(element);
+            if (item.targetId) {
+                const element = document.getElementById(item.targetId);
+                if (element) {
+                    observerRef.current?.observe(element);
+                }
             }
         });
     } else {
@@ -215,7 +218,7 @@ const Header = () => {
                     {item.label}
                   </Link>
                 ))}
-                 <Link href="/contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>
+                 <Link href="#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
                     Contact
                   </Link>
               </nav>

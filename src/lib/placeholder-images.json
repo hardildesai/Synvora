@@ -11,5 +11,44 @@
     },
     "gallery3": {
         "src": "https://picsum.photos/seed/g13/600/400"
+    },
+    "artist1": {
+        "src": "https://picsum.photos/seed/a1/300/400"
+    },
+    "artist2": {
+        "src": "https://picsum.photos/seed/a2/300/400"
+    },
+    "artist3": {
+        "src": "https://picsum.photos/seed/a3/300/400"
+    },
+    "artist4": {
+        "src": "https://picsum.photos/seed/a4/300/400"
+    },
+    "artist5": {
+        "src": "https://picsum.photos/seed/a5/300/400"
+    },
+    "artist6": {
+        "src": "https://picsum.photos/seed/a6/300/400"
+    },
+    "experience1": {
+        "src": "https://picsum.photos/seed/e1/400/300"
+    },
+    "experience2": {
+        "src": "https://picsum.photos/seed/e2/400/300"
+    },
+    "experience3": {
+        "src": "https://picsum.photos/seed/e3/400/300"
+    },
+    "sponsor1": {
+        "src": "https://picsum.photos/seed/s1/150/50"
+    },
+    "sponsor2": {
+        "src": "https://picsum.photos/seed/s2/150/50"
+    },
+    "sponsor3": {
+        "src": "https://picsum.photos/seed/s3/150/50"
+    },
+    "sponsor4": {
+        "src": "https://picsum.photos/seed/s4/150/50"
     }
 }
