@@ -26,37 +26,40 @@ const Header = () => {
 
   useEffect(() => {
     setActivePath(pathname);
+
+    // If we're not on the homepage, the hero elements are not visible.
     if (pathname !== '/') {
       setIsHeroCtaVisible(false);
       setIsHeroCountdownVisible(false);
       return;
     }
-
+    
+    // On the homepage, set an observer to track hero elements.
     const heroCtaEl = document.getElementById('heroBookBtn');
     const heroCountdownEl = document.getElementById('heroCountdown');
 
-    const ctaObserver = heroCtaEl ? new IntersectionObserver(
-      ([entry]) => setIsHeroCtaVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    ) : null;
-    
-    const countdownObserver = heroCountdownEl ? new IntersectionObserver(
-        ([entry]) => setIsHeroCountdownVisible(entry.isIntersecting),
-        { threshold: 0.1 }
-    ) : null;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target.id === 'heroBookBtn') {
+            setIsHeroCtaVisible(entry.isIntersecting);
+          } else if (entry.target.id === 'heroCountdown') {
+            setIsHeroCountdownVisible(entry.isIntersecting);
+          }
+        });
+      },
+      { threshold: 0.1 } // 10% of the element must be visible
+    );
 
-    if (heroCtaEl && ctaObserver) ctaObserver.observe(heroCtaEl);
-    if (heroCountdownEl && countdownObserver) countdownObserver.observe(heroCountdownEl);
-    
-    // Initial check
-    setIsHeroCtaVisible(!heroCtaEl || heroCtaEl.getBoundingClientRect().top < window.innerHeight);
-    setIsHeroCountdownVisible(!heroCountdownEl || heroCountdownEl.getBoundingClientRect().top < window.innerHeight);
+    if (heroCtaEl) observer.observe(heroCtaEl);
+    if (heroCountdownEl) observer.observe(heroCountdownEl);
 
-
+    // Cleanup observer on component unmount
     return () => {
-      if (heroCtaEl && ctaObserver) ctaObserver.disconnect();
-      if (heroCountdownEl && countdownObserver) countdownObserver.disconnect();
+      if (heroCtaEl) observer.unobserve(heroCtaEl);
+      if (heroCountdownEl) observer.unobserve(heroCountdownEl);
     };
+
   }, [pathname]);
 
   useEffect(() => {
