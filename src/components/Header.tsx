@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -8,6 +9,7 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
 
 
 const navItems = [
@@ -26,6 +28,8 @@ const Header = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const { user, loading } = useAuth();
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -97,17 +101,40 @@ const Header = () => {
     if(isMenuOpen) setIsMenuOpen(false);
     
     if (href.startsWith('/#') || href === '/') {
-        const id = href.startsWith('/#') ? href.split('#')[1] : 'hero';
-        if (id) {
+        router.push('/');
+        setTimeout(() => {
+          const id = href.startsWith('/#') ? href.split('#')[1] : 'hero';
           const element = document.getElementById(id);
           if (element) {
               element.scrollIntoView({ behavior: 'smooth' });
           }
-        }
+        }, 0);
     } else {
        router.push(href);
     }
   }
+  
+  const renderAuthButton = () => {
+    if (loading) return null;
+
+    if (user) {
+      return (
+        <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+          <Link href="/account">
+            My Account
+          </Link>
+        </Button>
+      );
+    }
+
+    return (
+      <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+        <Link href="/login">
+          Sign In
+        </Link>
+      </Button>
+    );
+  };
 
   if (!isMounted) {
     return (
@@ -133,7 +160,7 @@ const Header = () => {
             
               <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
                 {navItems.map((item) => (
-                  <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
+                  <button key={item.label} onClick={() => handleNavClick(item.href)}
                     className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
                   >
                     {(activePath === item.href) && (
@@ -144,7 +171,7 @@ const Header = () => {
                       />
                     )}
                      <span className="relative z-10">{item.label}</span>
-                  </Link>
+                  </button>
                 ))}
               </nav>
 
@@ -152,10 +179,10 @@ const Header = () => {
                 <AnimatePresence>
                   {!isHeroVisible && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <Button asChild variant="outline" className="rounded-full border-accent text-accent hover:text-accent-foreground hover:bg-accent">
                         <Link href="/tickets">
@@ -165,11 +192,7 @@ const Header = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                 <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                    <Link href="/#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
-                      Contact
-                    </Link>
-                </Button>
+                {renderAuthButton()}
                 <div className="md:hidden">
                   <Button onClick={() => setIsMenuOpen(true)} variant="ghost" size="icon" className="text-white">
                     <Menu />
@@ -215,13 +238,10 @@ const Header = () => {
                 {pathname === '/' ? (
                   <>
                     {navItems.map((item) => (
-                      <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
+                      <button key={item.label} className="text-left text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
                         {item.label}
-                      </Link>
+                      </button>
                     ))}
-                     <Link href="/#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
-                        Contact
-                      </Link>
                   </>
                 ) : (
                   <Link href="/" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>
@@ -229,11 +249,26 @@ const Header = () => {
                   </Link>
                 )}
               </nav>
-               <Button asChild className="w-full mt-8 font-bold">
-                  <Link href="/tickets" onClick={() => setIsMenuOpen(false)}>
-                    Book Tickets
-                  </Link>
-              </Button>
+              <div className="mt-8 space-y-4">
+                 <Button asChild className="w-full font-bold">
+                    <Link href="/tickets" onClick={() => setIsMenuOpen(false)}>
+                      Book Tickets
+                    </Link>
+                </Button>
+                 {user ? (
+                   <Button asChild variant="outline" className="w-full font-bold">
+                      <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                        My Account
+                      </Link>
+                    </Button>
+                 ) : (
+                    <Button asChild variant="outline" className="w-full font-bold">
+                      <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                        Sign In
+                      </Link>
+                    </Button>
+                 )}
+              </div>
             </motion.div>
           </motion.div>
         )}

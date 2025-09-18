@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -10,10 +11,12 @@ import PassSelectionForm, { PassDetails } from './PassSelectionForm';
 import { Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/use-auth';
 
 type Step = 'pass' | 'details' | 'payment' | 'success';
 
 export default function TicketPurchaseFlow() {
+  const { user, loading } = useAuth();
   const [step, setStep] = useState<Step>('pass');
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [eventCode, setEventCode] = useState<string | null>(null);
@@ -56,6 +59,33 @@ export default function TicketPurchaseFlow() {
         return <PassSelectionForm onSubmit={handlePassSubmit} />;
     }
   };
+
+  if (loading) {
+    return (
+      <Card className="shadow-2xl animate-in fade-in-50 duration-500 bg-transparent border-none shadow-none flex items-center justify-center p-20">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </Card>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Card className="shadow-2xl animate-in fade-in-50 duration-500 bg-transparent border-none shadow-none">
+        <CardHeader className="text-center">
+          <CardTitle className="font-headline text-2xl">Access Denied</CardTitle>
+          <CardDescription>You must be signed in to book tickets.</CardDescription>
+        </CardHeader>
+        <CardFooter className="flex-col gap-4">
+          <Button asChild className="w-full font-bold">
+            <Link href="/login">Sign In</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/register">Create an Account</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
 
   return (
       <Card className="shadow-2xl animate-in fade-in-50 duration-500 bg-transparent border-none shadow-none">
