@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -115,7 +116,13 @@ const Header = () => {
   }
   
   const renderAuthButton = () => {
-    if (loading) return null;
+    if (loading) {
+        return (
+            <Button disabled className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                Sign In
+            </Button>
+        )
+    }
 
     if (user) {
       return (
