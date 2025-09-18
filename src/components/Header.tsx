@@ -7,6 +7,8 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
 
 const navItems = [
   { href: '/', label: 'Home', targetId: 'hero' },
@@ -22,6 +24,8 @@ const Header = () => {
   
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
 
   useEffect(() => {
     // When navigating away from the homepage, always hide the CTA button
@@ -41,6 +45,9 @@ const Header = () => {
       entries.forEach(entry => {
         if (entry.target.id === 'hero') {
           setIsHeroVisible(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            setActivePath('/');
+          }
         } else {
             if (entry.isIntersecting) {
                 const navItem = navItems.find(item => item.targetId === entry.target.id);
@@ -156,7 +163,7 @@ const Header = () => {
                     key="book-tickets-btn-header"
                     className="hidden md:flex"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: 0.2 } }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
                      <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
@@ -178,7 +185,7 @@ const Header = () => {
                         <motion.span
                             className="relative font-bold text-accent-foreground whitespace-nowrap"
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 1, transition: { delay: 0.7 } }}
+                            animate={{ opacity: 1, transition: { delay: 0.3 } }}
                             exit={{ opacity: 0, transition: { duration: 0.1 } }}
                         >
                             Book Tickets
