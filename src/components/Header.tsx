@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import Logo from './Logo';
-import { Ticket, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import CountdownTimer from './CountdownTimer';
 
 const navItems = [
   { href: '/', label: 'Home', targetId: 'hero' },
@@ -24,39 +25,30 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only run this observer-based logic on the homepage
     if (pathname !== '/') {
       setActivePath(pathname);
       setIsHeroCtaVisible(false);
-      // Clean up existing observer if we navigate away from homepage
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
       return;
     }
 
-    //
-    // Sets up a new observer when on the homepage
-    //
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      let isVisible = false;
+    const handleIntersect: IntersectionObserverCallback = (entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          isVisible = true;
-          // Set active path for nav sections
-          const navItem = navItems.find(item => item.targetId === entry.target.id);
-          if (navItem) {
-            setActivePath(navItem.href);
-          }
-        }
-        // Specifically track the hero CTA button's visibility
         if (entry.target.id === 'heroBookBtn') {
           setIsHeroCtaVisible(entry.isIntersecting);
+        } else {
+           if (entry.isIntersecting) {
+            const navItem = navItems.find(item => item.targetId === entry.target.id);
+            if (navItem) {
+              setActivePath(navItem.href);
+            }
+          }
         }
       });
     };
     
-    // Disconnect previous observer before creating a new one
     if (observerRef.current) {
       observerRef.current.disconnect();
     }
@@ -74,15 +66,6 @@ const Header = () => {
 
     elementsToObserve.forEach(el => observerRef.current?.observe(el));
     
-    // Set initial state based on current visibility on mount
-    const heroBtn = document.getElementById('heroBookBtn');
-    if (heroBtn) {
-      const bounding = heroBtn.getBoundingClientRect();
-      setIsHeroCtaVisible(bounding.top < window.innerHeight && bounding.bottom >= 0);
-    }
-
-
-    // Cleanup on component unmount
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
@@ -106,10 +89,18 @@ const Header = () => {
     
     if (href.startsWith('/#')) {
         const id = href.split('#')[1];
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+        if (id) {
+          const element = document.getElementById(id);
+          if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+          }
         }
+    } else {
+      // It's a page link
+      const targetElement = document.querySelector(href);
+       if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 
@@ -126,7 +117,7 @@ const Header = () => {
               <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                 className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
               >
-                {item.href === activePath && (
+                {(item.href === activePath || (item.href.includes('#') && activePath.startsWith(item.href))) && (
                    <motion.span
                     layoutId="active-nav-link"
                     className="absolute inset-0 bg-primary/70 rounded-full"
@@ -226,8 +217,7 @@ const Header = () => {
               </nav>
                <Button asChild className="w-full mt-8 font-bold">
                   <Link href="/tickets" onClick={() => setIsMenuOpen(false)}>
-                  <Ticket className="mr-2 h-4 w-4" />
-                  Book Tickets
+                    Book Tickets
                   </Link>
               </Button>
             </motion.div>
