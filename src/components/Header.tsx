@@ -64,12 +64,6 @@ const Header = () => {
       .filter(Boolean) as HTMLElement[];
 
     elementsToObserve.forEach(el => observerRef.current?.observe(el));
-
-    // Initial check
-    const heroCtaEl = document.getElementById('heroBookBtn');
-    if (heroCtaEl) {
-        setIsHeroCtaVisible(heroCtaEl.getBoundingClientRect().top < window.innerHeight && heroCtaEl.getBoundingClientRect().bottom > 0);
-    }
     
 
     return () => {
@@ -107,9 +101,6 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
           <div className="flex items-center gap-6 flex-1">
             <Logo />
-            <div className="flex-1 hidden md:flex justify-start">
-              {/* Timer placeholder removed */}
-            </div>
           </div>
           
           <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
@@ -134,24 +125,24 @@ const Header = () => {
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                    initial={{ width: 40, borderRadius: '100%', opacity: 0 }}
+                     initial={{ width: 40, borderRadius: '100%' }}
                     animate={{
                       width: 'auto',
                       borderRadius: '9999px',
-                      opacity: 1,
                       transition: { duration: 0.5, ease: 'circOut' },
                     }}
                     exit={{
                       width: 40,
                       borderRadius: '100%',
-                      opacity: 0,
                       transition: { duration: 0.3, ease: 'circIn' },
                     }}
                     className="hidden md:block overflow-hidden"
                   >
-                    <Button asChild className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap">
+                    <Button asChild className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap h-10">
                         <Link href="/tickets">
-                          Book Tickets
+                           <motion.span initial={{opacity: 0}} animate={{opacity: 1, transition:{delay: 0.3}}} exit={{opacity:0, transition: {duration: 0.1}}}>
+                            Book Tickets
+                           </motion.span>
                         </Link>
                     </Button>
                   </motion.div>
