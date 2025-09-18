@@ -117,7 +117,7 @@ export default function AdminDashboard({
             {Object.entries(foodTypeCounts).map(([type, count]) => (
               <Badge key={type} variant="outline" className="text-base">
                 {type}: {count}
-              </badge>
+              </Badge>
             ))}
           </CardContent>
         </Card>
