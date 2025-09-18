@@ -1,3 +1,4 @@
+
 'use server';
 
 import { validatePaymentProof, ValidatePaymentProofInput } from '@/ai/flows/validate-payment-proof';
@@ -29,29 +30,32 @@ export async function processPayment(
   }
 
   const { name, email, transactionId, paymentScreenshotDataUri, phone, gender, foodType, passType } = validationResult.data;
-
-  // For the purpose of this UI demo, we will simulate a successful submission
-  // without actually calling the AI verification. This gives the user instant
-  // feedback on the confirmation screen. The real verification would happen
-  // in the background.
-
+  
   try {
-    // We can still "generate" a code to show on the success screen,
-    // even though the real one would be emailed later.
+    // 1. Validate the payment proof using the AI flow.
+    // This is a secure backend operation.
+    const paymentValidation = await validatePaymentProof({
+      userName: name,
+      userEmail: email,
+      transactionId,
+      paymentScreenshotDataUri,
+    });
+
+    if (!paymentValidation.isValid) {
+      return { success: false, error: `Payment validation failed: ${paymentValidation.reason}` };
+    }
+
+    // 2. If valid, generate a unique event code.
     const eventCodeResponse = await generateUniqueEventCode({
       userId: email,
       transactionId,
     });
 
     if (!eventCodeResponse.eventEntryCode) {
-      return { success: false, error: 'Could not generate a placeholder event code.' };
+      return { success: false, error: 'Could not generate an event code.' };
     }
     
-    // In a real scenario, you would now trigger a background job to run:
-    // const paymentValidation = await validatePaymentProof(paymentProofInput);
-    // And if (paymentValidation.isValid), then send the real email with the code.
-
-    // For this demo, save the registration to our mock DB
+    // 3. Save the final, verified registration to the database.
     await saveRegistration({
       name,
       email,
@@ -60,7 +64,7 @@ export async function processPayment(
       foodType,
       passType,
       transactionId,
-      paymentScreenshotDataUri, // In a real app, you might upload this to cloud storage and save the URL
+      paymentScreenshotDataUri,
       eventCode: eventCodeResponse.eventEntryCode,
     });
 
@@ -68,6 +72,6 @@ export async function processPayment(
     return { success: true, eventCode: eventCodeResponse.eventEntryCode };
   } catch (error) {
     console.error('Error processing payment:', error);
-    return { success: false, error: 'An unexpected error occurred.' };
+    return { success: false, error: 'An unexpected error occurred during verification.' };
   }
 }
