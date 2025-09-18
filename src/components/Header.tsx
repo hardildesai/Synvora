@@ -28,47 +28,41 @@ const Header = () => {
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    // Disconnect any existing observer
     if (observerRef.current) {
         observerRef.current.disconnect();
     }
 
-    // Only run this complex observer logic on the homepage
-    if (pathname === '/') {
-        const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-            entries.forEach(entry => {
-                const id = entry.target.id;
-                if (entry.isIntersecting) {
-                   if (id === 'heroBookBtn') setIsHeroCtaVisible(true);
-                   if (id === 'heroCountdown') setIsHeroCountdownVisible(true);
-                } else {
-                   if (id === 'heroBookBtn') setIsHeroCtaVisible(false);
-                   if (id === 'heroCountdown') setIsHeroCountdownVisible(false);
-                }
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach(entry => {
+            const id = entry.target.id;
+            if (entry.isIntersecting) {
+               if (id === 'heroBookBtn') setIsHeroCtaVisible(true);
+               if (id === 'heroCountdown') setIsHeroCountdownVisible(true);
+            } else {
+               if (id === 'heroBookBtn') setIsHeroCtaVisible(false);
+               if (id === 'heroCountdown') setIsHeroCountdownVisible(false);
+            }
 
-                // Set active nav link based on which section is intersecting
-                if(entry.isIntersecting) {
-                    const navItem = navItems.find(item => item.targetId === id);
-                    if (navItem) {
-                        setActivePath(navItem.href);
-                    }
+            if(entry.isIntersecting) {
+                const navItem = navItems.find(item => item.targetId === id);
+                if (navItem) {
+                    setActivePath(navItem.href);
                 }
-            });
-        };
-
-        observerRef.current = new IntersectionObserver(handleIntersect, { 
-            // This rootMargin is key. It creates a "line" in the middle of the screen.
-            // When a section crosses this line, it becomes the active one.
-            rootMargin: '-50% 0px -50% 0px',
-            threshold: 0,
+            }
         });
+    };
 
+    observerRef.current = new IntersectionObserver(handleIntersect, { 
+        rootMargin: '-50% 0px -50% 0px',
+        threshold: 0,
+    });
+    
+    if (pathname === '/') {
         const heroCtaEl = document.getElementById('heroBookBtn');
         const heroCountdownEl = document.getElementById('heroCountdown');
         if (heroCtaEl) observerRef.current.observe(heroCtaEl);
         if (heroCountdownEl) observerRef.current.observe(heroCountdownEl);
         
-        // Add section trackers for active nav link
         navItems.forEach(item => {
             if (item.targetId) {
                 const element = document.getElementById(item.targetId);
@@ -78,7 +72,6 @@ const Header = () => {
             }
         });
     } else {
-      // For other pages, just set the active path from the URL
       setActivePath(pathname);
       setIsHeroCtaVisible(false);
       setIsHeroCountdownVisible(false);
@@ -104,8 +97,7 @@ const Header = () => {
     setActivePath(href);
     if(isMenuOpen) setIsMenuOpen(false);
     
-    // If it's a hash link, let the browser handle the smooth scroll
-    if (href.includes('#')) {
+    if (href.startsWith('/#')) {
         const id = href.split('#')[1];
         const element = document.getElementById(id);
         if (element) {
@@ -120,23 +112,24 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
           <div className="flex items-center gap-6 flex-1">
             <Logo />
-            <AnimatePresence>
-                {!isHeroCountdownVisible && (
-                     <motion.div
-                        key="compact-countdown"
-                        initial={{ opacity: 0, filter: 'blur(5px)' }}
-                        animate={{ opacity: 1, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, filter: 'blur(5px)' }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
-                        className="hidden md:block"
-                     >
-                        <CountdownTimer targetDate={eventDate} compact={true} />
-                     </motion.div>
-                )}
-            </AnimatePresence>
+            <div className="flex-1 hidden md:flex justify-start">
+              <AnimatePresence>
+                  {!isHeroCountdownVisible && (
+                      <motion.div
+                          key="compact-countdown"
+                          initial={{ opacity: 0, filter: 'blur(5px)' }}
+                          animate={{ opacity: 1, filter: 'blur(0px)' }}
+                          exit={{ opacity: 0, filter: 'blur(5px)' }}
+                          transition={{ duration: 0.3, ease: 'easeOut' }}
+                      >
+                          <CountdownTimer targetDate={eventDate} compact={true} />
+                      </motion.div>
+                  )}
+              </AnimatePresence>
+            </div>
           </div>
           
-          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
             {navItems.map((item) => (
               <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                 className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
@@ -158,9 +151,9 @@ const Header = () => {
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     className="hidden md:block"
                   >
@@ -173,7 +166,7 @@ const Header = () => {
                 )}
               </AnimatePresence>
              <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                <Link href="/contact">
+                <Link href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
                   Contact
                 </Link>
             </Button>
