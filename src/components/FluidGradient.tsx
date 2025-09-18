@@ -45,7 +45,7 @@ export default function FluidGradient() {
       }
 
       update() {
-        this.angle += 0.003;
+        this.angle += 0.0039;
       }
 
       draw() {
