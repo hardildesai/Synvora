@@ -5,8 +5,7 @@ import Lenis from '@studio-freight/lenis';
 const SmoothScroll = () => {
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.1, // Lower values create a smoother, more 'floaty' scroll
-      smoothWheel: true,
+      lerp: 0.1, // A higher value like 0.1 makes it more responsive
     });
 
     function raf(time: number) {
