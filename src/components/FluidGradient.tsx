@@ -63,7 +63,7 @@ export default function FluidGradient() {
       }
     }
 
-    const gradientAnimation = new GradientAnimation(context, canvas.width, canvas.height);
+    let gradientAnimation = new GradientAnimation(context, canvas.width, canvas.height);
 
     function animate() {
       gradientAnimation.update();
@@ -74,9 +74,10 @@ export default function FluidGradient() {
     animate();
     
     const handleResize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gradientAnimation = new GradientAnimation(context!, canvas.width, canvas.height);
+        if (!canvasRef.current || !context) return;
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
+        gradientAnimation = new GradientAnimation(context, canvasRef.current.width, canvasRef.current.height);
     };
 
     window.addEventListener('resize', handleResize);
