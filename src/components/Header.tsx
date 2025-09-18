@@ -139,22 +139,24 @@ const Header = () => {
             <Logo />
           </div>
           
-          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
-            {navItems.map((item) => (
-              <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
-                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
-              >
-                {(activePath === item.href) && (
-                   <motion.span
-                    layoutId="active-nav-link"
-                    className="absolute inset-0 bg-primary/70 rounded-full"
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
-                )}
-                 <span className="relative z-10">{item.label}</span>
-              </Link>
-            ))}
-          </nav>
+          {pathname === '/' && (
+            <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
+              {navItems.map((item) => (
+                <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
+                  className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
+                >
+                  {(activePath === item.href) && (
+                     <motion.span
+                      layoutId="active-nav-link"
+                      className="absolute inset-0 bg-primary/70 rounded-full"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                   <span className="relative z-10">{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+          )}
 
           <div className="flex items-center gap-4 flex-1 justify-end">
             <AnimatePresence>
@@ -162,9 +164,6 @@ const Header = () => {
                   <motion.div
                     key="book-tickets-btn-header"
                     className="hidden md:flex"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                   >
                      <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
                         <motion.svg
@@ -195,7 +194,7 @@ const Header = () => {
                 )}
               </AnimatePresence>
              <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                <Link href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
+                <Link href="/#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
                   Contact
                 </Link>
             </Button>
@@ -235,12 +234,12 @@ const Header = () => {
                 </Button>
               </div>
               <nav className="flex flex-col gap-6">
-                {navItems.map((item) => (
+                {pathname === '/' && navItems.map((item) => (
                   <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
                     {item.label}
                   </Link>
                 ))}
-                 <Link href="#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
+                 <Link href="/#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
                     Contact
                   </Link>
               </nav>
