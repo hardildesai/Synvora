@@ -18,23 +18,23 @@ export default function FluidGradient() {
       private ctx: CanvasRenderingContext2D;
       private width: number;
       private height: number;
-      private angle: number;
+      private time: number;
       private colors: string[];
 
       constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
         this.ctx = ctx;
         this.width = width;
         this.height = height;
-        this.angle = 0;
+        this.time = 0;
         // Using the theme colors
         this.colors = ['hsl(271, 100%, 50%)', 'hsl(262, 80%, 15%)', 'hsl(45, 100%, 51%)', 'hsl(262, 80%, 5%)'];
       }
       
       createGradient() {
-        const x1 = this.width / 2 + Math.cos(this.angle) * this.width;
-        const y1 = this.height / 2 + Math.sin(this.angle) * this.height;
-        const x2 = this.width / 2 + Math.cos(this.angle + Math.PI) * this.width;
-        const y2 = this.height / 2 + Math.sin(this.angle + Math.PI) * this.height;
+        const x1 = this.width * (0.5 + 0.5 * Math.cos(this.time * 0.0015));
+        const y1 = this.height * (0.5 + 0.5 * Math.sin(this.time * 0.0012));
+        const x2 = this.width * (0.5 + 0.5 * Math.cos(this.time * 0.0008 + Math.PI));
+        const y2 = this.height * (0.5 + 0.5 * Math.sin(this.time * 0.001 + Math.PI));
         
         const gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
         const step = 1 / (this.colors.length - 1);
@@ -45,7 +45,7 @@ export default function FluidGradient() {
       }
 
       update() {
-        this.angle += 0.0039;
+        this.time++;
       }
 
       draw() {
