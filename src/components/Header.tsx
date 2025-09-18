@@ -24,37 +24,46 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (typeof window === 'undefined' || pathname !== '/') {
-        setActivePath(pathname);
-        setIsHeroCtaVisible(false);
-        if (observerRef.current) {
-            observerRef.current.disconnect();
-        }
-        return;
-    }
-
-    if (observerRef.current) {
+    // Only run this observer-based logic on the homepage
+    if (pathname !== '/') {
+      setActivePath(pathname);
+      setIsHeroCtaVisible(false);
+      // Clean up existing observer if we navigate away from homepage
+      if (observerRef.current) {
         observerRef.current.disconnect();
+      }
+      return;
     }
 
+    //
+    // Sets up a new observer when on the homepage
+    //
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-        entries.forEach(entry => {
-            if (entry.target.id === 'heroBookBtn') {
-                setIsHeroCtaVisible(entry.isIntersecting);
-            }
-
-            if(entry.isIntersecting) {
-                const navItem = navItems.find(item => item.targetId === entry.target.id);
-                if (navItem) {
-                    setActivePath(navItem.href);
-                }
-            }
-        });
+      let isVisible = false;
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+          // Set active path for nav sections
+          const navItem = navItems.find(item => item.targetId === entry.target.id);
+          if (navItem) {
+            setActivePath(navItem.href);
+          }
+        }
+        // Specifically track the hero CTA button's visibility
+        if (entry.target.id === 'heroBookBtn') {
+          setIsHeroCtaVisible(entry.isIntersecting);
+        }
+      });
     };
     
-    observerRef.current = new IntersectionObserver(handleIntersect, { 
-        rootMargin: '-50% 0px -50% 0px',
-        threshold: 0,
+    // Disconnect previous observer before creating a new one
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver(handleIntersect, {
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0,
     });
     
     const elementsToObserve = navItems
@@ -65,14 +74,23 @@ const Header = () => {
 
     elementsToObserve.forEach(el => observerRef.current?.observe(el));
     
+    // Set initial state based on current visibility on mount
+    const heroBtn = document.getElementById('heroBookBtn');
+    if (heroBtn) {
+      const bounding = heroBtn.getBoundingClientRect();
+      setIsHeroCtaVisible(bounding.top < window.innerHeight && bounding.bottom >= 0);
+    }
 
+
+    // Cleanup on component unmount
     return () => {
-        if (observerRef.current) {
-            observerRef.current.disconnect();
-        }
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
 
   }, [pathname]);
+
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -125,22 +143,30 @@ const Header = () => {
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                     initial={{ width: 40, borderRadius: '100%' }}
+                    initial={{ opacity: 0, width: 40, borderRadius: '100%' }}
                     animate={{
+                      opacity: 1,
                       width: 'auto',
                       borderRadius: '9999px',
-                      transition: { duration: 0.5, ease: 'circOut' },
+                      transition: {
+                        opacity: { duration: 0.2, delay: 0.1 },
+                        width: { duration: 0.3, delay: 0.2, ease: 'circOut' },
+                      },
                     }}
                     exit={{
+                      opacity: 0,
                       width: 40,
                       borderRadius: '100%',
-                      transition: { duration: 0.3, ease: 'circIn' },
+                      transition: {
+                        opacity: { duration: 0.1 },
+                        width: { duration: 0.3, ease: 'circIn' },
+                      },
                     }}
                     className="hidden md:block overflow-hidden"
                   >
                     <Button asChild className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap h-10">
                         <Link href="/tickets">
-                           <motion.span initial={{opacity: 0}} animate={{opacity: 1, transition:{delay: 0.3}}} exit={{opacity:0, transition: {duration: 0.1}}}>
+                           <motion.span initial={{opacity: 0}} animate={{opacity: 1, transition:{delay: 0.4}}} exit={{opacity:0, transition: {duration: 0.1}}}>
                             Book Tickets
                            </motion.span>
                         </Link>
