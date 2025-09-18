@@ -36,7 +36,7 @@ export default function LoginForm() {
     try {
       const methods = await fetchSignInMethodsForEmail(auth, email);
       if (methods.length === 0) {
-        setError('Account does not exist. Please sign up.');
+        setError("No pass found for this email. Grab a ticket and join the lineup!");
         setLoading(false);
         return;
       }
@@ -46,8 +46,8 @@ export default function LoginForm() {
       router.push('/account');
 
     } catch (err: any) {
-      if (err.code === 'auth/wrong-password') {
-        setError('Incorrect password. Try again.');
+      if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        setError('Wrong password. Please try again.');
       } else {
         setError('An unexpected error occurred. Please try again.');
         console.error(err);
