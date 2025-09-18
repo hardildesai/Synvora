@@ -32,7 +32,6 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    // When navigating away from the homepage, always hide the CTA button
     if (pathname !== '/') {
       setActivePath(pathname);
       setIsHeroVisible(false);
@@ -42,7 +41,6 @@ const Header = () => {
       return;
     }
     
-    // Reset active path for homepage
     setActivePath('/');
 
     const handleIntersect: IntersectionObserverCallback = (entries) => {
@@ -67,7 +65,6 @@ const Header = () => {
       observerRef.current.disconnect();
     }
 
-    // Observe the main hero section and the content sections
     observerRef.current = new IntersectionObserver(handleIntersect, {
       rootMargin: '-50% 0px -50% 0px',
       threshold: 0,
@@ -155,43 +152,16 @@ const Header = () => {
                 <AnimatePresence>
                   {!isHeroVisible && (
                     <motion.div
-                      key="book-tickets-btn-header"
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      variants={{
-                        initial: { opacity: 0, scale: 0.5 },
-                        animate: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-                        exit: { opacity: 0, scale: 0.5, transition: { duration: 0.3 } }
-                      }}
-                      className="origin-center"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     >
-                      <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
-                        <motion.svg
-                          width="140"
-                          height="40"
-                          viewBox="0 0 140 40"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1, transition: { duration: 0.4 } }}
-                          exit={{ pathLength: 0, transition: { duration: 0.3 } }}
-                          className="absolute"
-                        >
-                          <motion.path
-                            d="M20,1 h100 a19,19 0 0 1 19,19 v2 a19,19 0 0 1 -19,19 h-100 a19,19 0 0 1 -19,-19 v-2 a19,19 0 0 1 19,-19 z"
-                            fill="transparent"
-                            strokeWidth="2"
-                            stroke="hsl(var(--accent))"
-                          />
-                        </motion.svg>
-                        <motion.span
-                          className="relative font-bold text-accent whitespace-nowrap"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1, transition: { delay: 0.3 } }}
-                          exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                        >
+                      <Button asChild variant="outline" className="rounded-full border-accent text-accent hover:text-accent-foreground hover:bg-accent">
+                        <Link href="/tickets">
                           Book Tickets
-                        </motion.span>
-                      </Link>
+                        </Link>
+                      </Button>
                     </motion.div>
                   )}
                 </AnimatePresence>
