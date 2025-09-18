@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import CountdownTimer from './CountdownTimer';
 
 const navItems = [
-  { href: '/', label: 'Home', targetId: 'hero' }, // Assuming a hero section with id 'hero'
+  { href: '/', label: 'Home', targetId: 'hero' },
   { href: '/#gallery', label: 'Gallery', targetId: 'gallery' },
   { href: '/#faq', label: 'FAQ', targetId: 'faq' },
 ];
@@ -22,12 +22,16 @@ const Header = () => {
   const [activePath, setActivePath] = useState('/');
   
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const sectionRefs = useRef<Map<string, HTMLElement | null>>(new Map());
 
   const pathname = usePathname();
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
+    // Disconnect any existing observer
+    if (observerRef.current) {
+        observerRef.current.disconnect();
+    }
+
     // Only run this complex observer logic on the homepage
     if (pathname === '/') {
         const handleIntersect = (entries: IntersectionObserverEntry[]) => {
@@ -36,24 +40,28 @@ const Header = () => {
                 if (entry.isIntersecting) {
                    if (id === 'heroBookBtn') setIsHeroCtaVisible(true);
                    if (id === 'heroCountdown') setIsHeroCountdownVisible(true);
-                   
-                   const navItem = navItems.find(item => item.targetId === id);
-                   if (navItem) {
-                       setActivePath(navItem.href);
-                   }
                 } else {
                    if (id === 'heroBookBtn') setIsHeroCtaVisible(false);
                    if (id === 'heroCountdown') setIsHeroCountdownVisible(false);
+                }
+
+                // Set active nav link based on which section is intersecting
+                if(entry.isIntersecting) {
+                    const navItem = navItems.find(item => item.targetId === id);
+                    if (navItem) {
+                        setActivePath(navItem.href);
+                    }
                 }
             });
         };
 
         observerRef.current = new IntersectionObserver(handleIntersect, { 
-            rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of the viewport
+            // This rootMargin is key. It creates a "line" in the middle of the screen.
+            // When a section crosses this line, it becomes the active one.
+            rootMargin: '-50% 0px -50% 0px',
             threshold: 0,
         });
 
-        // Add hero visibility trackers
         const heroCtaEl = document.getElementById('heroBookBtn');
         const heroCountdownEl = document.getElementById('heroCountdown');
         if (heroCtaEl) observerRef.current.observe(heroCtaEl);
@@ -63,29 +71,9 @@ const Header = () => {
         navItems.forEach(item => {
             const element = document.getElementById(item.targetId);
             if (element) {
-                sectionRefs.current.set(item.targetId, element);
                 observerRef.current?.observe(element);
             }
         });
-
-        // Set initial active path based on current scroll position
-        // This handles page reloads
-        let currentActive: string | null = null;
-        let maxVisibleRatio = -1;
-        sectionRefs.current.forEach((el, id) => {
-             if (el) {
-                const rect = el.getBoundingClientRect();
-                const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-                const visibleRatio = visibleHeight / rect.height;
-                if (visibleRatio > maxVisibleRatio) {
-                    maxVisibleRatio = visibleRatio;
-                    const navItem = navItems.find(item => item.targetId === id);
-                    if(navItem) currentActive = navItem.href;
-                }
-             }
-        });
-        if(currentActive) setActivePath(currentActive);
-
     } else {
       // For other pages, just set the active path from the URL
       setActivePath(pathname);
@@ -94,7 +82,9 @@ const Header = () => {
     }
 
     return () => {
-        observerRef.current?.disconnect();
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
     };
 
   }, [pathname]);
@@ -131,9 +121,9 @@ const Header = () => {
                 {!isHeroCountdownVisible && (
                      <motion.div
                         key="compact-countdown"
-                        initial={{ opacity: 0, scale: 0.9, filter: 'blur(5px)' }}
-                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, scale: 0.9, filter: 'blur(5px)' }}
+                        initial={{ opacity: 0, filter: 'blur(5px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, filter: 'blur(5px)' }}
                         transition={{ duration: 0.3, ease: 'easeOut' }}
                         className="hidden md:block"
                      >
@@ -165,9 +155,9 @@ const Header = () => {
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                    initial={{ scale: 0, opacity: 0, y: -20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0, opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     className="hidden md:block"
                   >
