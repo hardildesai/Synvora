@@ -46,7 +46,7 @@ const Header = () => {
             if(entry.isIntersecting) {
                 const navItem = navItems.find(item => item.targetId === id);
                 if (navItem) {
-                    setActivePath(navItem.href);
+                    setActivePath(item.href);
                 }
             }
         });
@@ -112,7 +112,7 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
           <div className="flex items-center gap-6 flex-1">
             <Logo />
-            <div className="flex-1 hidden md:flex justify-start">
+            <div className="flex-1 hidden md:flex justify-start min-w-[150px]">
               <AnimatePresence>
                   {!isHeroCountdownVisible && (
                       <motion.div
@@ -151,15 +151,24 @@ const Header = () => {
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="hidden md:block"
+                    initial={{ width: 40, borderRadius: '100%', opacity: 0 }}
+                    animate={{
+                      width: 'auto',
+                      borderRadius: '9999px',
+                      opacity: 1,
+                      transition: { duration: 0.5, ease: 'circOut' },
+                    }}
+                    exit={{
+                      width: 40,
+                      borderRadius: '100%',
+                      opacity: 0,
+                      transition: { duration: 0.3, ease: 'circIn' },
+                    }}
+                    className="hidden md:block overflow-hidden"
                   >
-                    <Button asChild variant="outline" className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full">
+                    <Button asChild className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap">
                         <Link href="/tickets">
-                        Book Tickets
+                          Book Tickets
                         </Link>
                     </Button>
                   </motion.div>
