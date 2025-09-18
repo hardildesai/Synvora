@@ -1,5 +1,5 @@
 import AdminDashboard from '@/components/admin/AdminDashboard';
-import { getRegistrations } from '@/lib/mock-db';
+import { getRegistrations } from '@/lib/db';
 
 export default async function AdminPage() {
   const registrations = await getRegistrations();

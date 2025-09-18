@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Download } from 'lucide-react';
 import { useState } from 'react';
-import type { Registration } from '@/lib/mock-db';
+import type { Registration } from '@/lib/db';
 import { Button } from '../ui/button';
 import Papa from 'papaparse';
 
@@ -40,9 +40,9 @@ export default function AdminDashboard({
   const handleExport = () => {
     // We don't want to export the screenshot data URI
     const dataToExport = registrations.map(
-      ({ paymentScreenshotDataUri, ...rest }) => ({
+      ({ paymentScreenshotDataUri, submittedAt, ...rest }) => ({
         ...rest,
-        submittedAt: format(rest.submittedAt, 'yyyy-MM-dd HH:mm:ss'),
+        submittedAt: submittedAt ? format(new Date(submittedAt.seconds * 1000), 'yyyy-MM-dd HH:mm:ss') : '',
       })
     );
 
@@ -117,7 +117,7 @@ export default function AdminDashboard({
             {Object.entries(foodTypeCounts).map(([type, count]) => (
               <Badge key={type} variant="outline" className="text-base">
                 {type}: {count}
-              </Badge>
+              </badge>
             ))}
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ export default function AdminDashboard({
             <TableBody>
               {registrations.map((reg) => (
                 <TableRow key={reg.id}>
-                  <TableCell>{format(reg.submittedAt, 'PPp')}</TableCell>
+                  <TableCell>{reg.submittedAt ? format(new Date(reg.submittedAt.seconds * 1000), 'PPp') : 'N/A'}</TableCell>
                   <TableCell>{reg.name}</TableCell>
                   <TableCell>{reg.email}</TableCell>
                   <TableCell>

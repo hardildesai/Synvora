@@ -3,7 +3,7 @@
 import { validatePaymentProof, ValidatePaymentProofInput } from '@/ai/flows/validate-payment-proof';
 import { generateUniqueEventCode } from '@/ai/flows/generate-unique-event-code';
 import { z } from 'zod';
-import { saveRegistration } from '@/lib/mock-db';
+import { saveRegistration } from '@/lib/db';
 import { PassDetails } from '@/components/tickets/PassSelectionForm';
 
 const processPaymentInputSchema = z.object({
