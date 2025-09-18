@@ -16,7 +16,7 @@ const navItems = [
 ];
 
 const Header = () => {
-  const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState('/');
   
@@ -24,19 +24,23 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    // When navigating away from the homepage, always hide the CTA button
     if (pathname !== '/') {
       setActivePath(pathname);
-      setIsHeroCtaVisible(false);
+      setIsHeroVisible(false);
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
       return;
     }
     
+    // Reset active path for homepage
+    setActivePath('/');
+
     const handleIntersect: IntersectionObserverCallback = (entries) => {
       entries.forEach(entry => {
-        if (entry.target.id === 'heroBookBtn') {
-          setIsHeroCtaVisible(entry.isIntersecting);
+        if (entry.target.id === 'hero') {
+          setIsHeroVisible(entry.isIntersecting);
         } else {
             if (entry.isIntersecting) {
                 const navItem = navItems.find(item => item.targetId === entry.target.id);
@@ -52,14 +56,14 @@ const Header = () => {
       observerRef.current.disconnect();
     }
 
+    // Observe the main hero section and the content sections
     observerRef.current = new IntersectionObserver(handleIntersect, {
       rootMargin: '-50% 0px -50% 0px',
       threshold: 0,
     });
 
-    const elementsToObserve = navItems
-      .map(item => item.targetId)
-      .concat('heroBookBtn')
+    const elementsToObserve = ['hero']
+      .concat(navItems.map(item => item.targetId))
       .map(id => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
 
@@ -84,8 +88,8 @@ const Header = () => {
     setActivePath(href);
     if(isMenuOpen) setIsMenuOpen(false);
     
-    if (href.startsWith('/#')) {
-        const id = href.split('#')[1];
+    if (href.startsWith('/#') || href === '/') {
+        const id = href.startsWith('/#') ? href.split('#')[1] : 'hero';
         if (id) {
           const element = document.getElementById(id);
           if (element) {
@@ -93,12 +97,32 @@ const Header = () => {
           }
         }
     } else {
-      const targetElement = document.querySelector(href);
-       if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
+       router.push(href);
     }
   }
+  
+  const capsule = {
+    initial: {
+      pathLength: 0,
+      opacity: 0,
+    },
+    animate: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { type: "spring", duration: 1.5, bounce: 0 },
+        opacity: { duration: 0.2 }
+      }
+    },
+    exit: {
+      pathLength: 0,
+      opacity: 0,
+      transition: {
+        pathLength: { duration: 0.4, ease: "easeOut" },
+        opacity: { duration: 0.2, delay: 0.2 }
+      }
+    }
+  };
 
   return (
     <>
@@ -113,7 +137,7 @@ const Header = () => {
               <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                 className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
               >
-                {(item.href === activePath || (item.href.includes('#') && activePath.startsWith(item.href))) && (
+                {(activePath === item.href) && (
                    <motion.span
                     layoutId="active-nav-link"
                     className="absolute inset-0 bg-primary/70 rounded-full"
@@ -127,45 +151,39 @@ const Header = () => {
 
           <div className="flex items-center gap-4 flex-1 justify-end">
             <AnimatePresence>
-                {!isHeroCtaVisible && (
+                {!isHeroVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
-                    className="hidden md:flex justify-end"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
+                    className="hidden md:flex"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, transition: { delay: 0.2 } }}
+                    exit={{ opacity: 0 }}
                   >
-                    <motion.div
-                      className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap h-10 flex items-center justify-center overflow-hidden"
-                      initial={{ width: 40, borderRadius: '100%' }}
-                      animate={{
-                        width: 'auto',
-                        borderRadius: '9999px',
-                        transition: {
-                          width: { duration: 0.3, ease: 'circOut' },
-                          borderRadius: { duration: 0.3, ease: 'circOut' },
-                        },
-                      }}
-                      exit={{
-                        width: 40,
-                        borderRadius: '100%',
-                        transition: {
-                          width: { duration: 0.3, ease: 'circIn' },
-                          borderRadius: { duration: 0.3, ease: 'circIn' },
-                        },
-                      }}
-                    >
-                      <Link href="/tickets" className="px-6 h-full flex items-center">
-                         <motion.span 
-                            initial={{opacity: 0}} 
-                            animate={{opacity: 1, transition:{delay: 0.2}}} 
-                            exit={{opacity:0, transition: {duration: 0.1}}}
-                         >
-                          Book Tickets
-                         </motion.span>
-                      </Link>
-                    </motion.div>
+                     <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
+                        <motion.svg
+                            width="140"
+                            height="40"
+                            viewBox="0 0 140 40"
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            className="absolute"
+                        >
+                            <motion.path
+                                d="M20,1 h100 a19,19 0 0 1 19,19 v2 a19,19 0 0 1 -19,19 h-100 a19,19 0 0 1 -19,-19 v-2 a19,19 0 0 1 19,-19 z"
+                                fill="hsl(var(--accent))"
+                                variants={capsule}
+                            />
+                        </motion.svg>
+                        <motion.span
+                            className="relative font-bold text-accent-foreground whitespace-nowrap"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1, transition: { delay: 0.7 } }}
+                            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                        >
+                            Book Tickets
+                        </motion.span>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
