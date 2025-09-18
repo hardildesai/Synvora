@@ -11,6 +11,7 @@ interface AuthContextType {
   loading: boolean;
   logout: () => Promise<void>;
   updateUserInFirestore: (user: User, additionalData?: object) => Promise<void>;
+  pseudoLogin?: (userData: {uid: string, email: string, displayName: string}) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,19 +21,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Check for pseudo-user in session storage
+    const pseudoUserJson = sessionStorage.getItem('pseudo-user');
+    if (pseudoUserJson) {
+      setUser(JSON.parse(pseudoUserJson) as User);
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    } else {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        setLoading(false);
+      });
+      return () => unsubscribe();
+    }
   }, []);
 
   const logout = async () => {
-    await firebaseSignOut(auth);
+    // Clear pseudo-user session
+    if (sessionStorage.getItem('pseudo-user')) {
+      sessionStorage.removeItem('pseudo-user');
+      setUser(null);
+    } else {
+      await firebaseSignOut(auth);
+    }
+  };
+
+  const pseudoLogin = (userData: {uid: string, email: string, displayName: string}) => {
+    const pseudoUser = {
+      ...userData,
+      // Add any other mock user properties your app might need
+      emailVerified: true,
+    } as User;
+    sessionStorage.setItem('pseudo-user', JSON.stringify(pseudoUser));
+    setUser(pseudoUser);
   };
   
   const updateUserInFirestore = async (user: User, additionalData = {}) => {
+    if (user.uid === 'admin-synvora') return; // Do not write pseudo-admin to firestore
     const userRef = doc(db, `users/${user.uid}`);
     const snapshot = await getDoc(userRef);
 
@@ -53,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
 
-  const value = { user, loading, logout, updateUserInFirestore };
+  const value = { user, loading, logout, updateUserInFirestore, pseudoLogin };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

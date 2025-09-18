@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -27,11 +28,30 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { pseudoLogin } = useAuth();
+
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    // Special admin login
+    if (email === 'info.synvora@gmail.com' && password === 'Synvora@hapa20') {
+      if (pseudoLogin) {
+         pseudoLogin({
+            uid: 'admin-synvora',
+            email: 'info.synvora@gmail.com',
+            displayName: 'Admin',
+         });
+         toast({ title: 'Admin login successful!' });
+         router.push('/account');
+      } else {
+         setError('Pseudo login function not available.');
+      }
+      setLoading(false);
+      return;
+    }
 
     try {
       const methods = await fetchSignInMethodsForEmail(auth, email);
