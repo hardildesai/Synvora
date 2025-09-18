@@ -107,104 +107,93 @@ const Header = () => {
        router.push(href);
     }
   }
-  
-  const capsule = {
-    initial: {
-      pathLength: 0,
-      opacity: 0,
-    },
-    animate: {
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        pathLength: { type: "spring", duration: 1.5, bounce: 0 },
-        opacity: { duration: 0.2 }
-      }
-    },
-    exit: {
-      pathLength: 0,
-      opacity: 0,
-      transition: {
-        pathLength: { duration: 0.4, ease: "easeOut" },
-        opacity: { duration: 0.2, delay: 0.2 }
-      }
-    }
-  };
 
   return (
     <>
       <header className="fixed top-4 inset-x-0 z-50 max-w-screen-xl mx-auto px-4">
-        <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
-          <div className="flex items-center gap-6 flex-1">
-            <Logo />
-          </div>
-          
-          {pathname === '/' && (
-            <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
-              {navItems.map((item) => (
-                <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
-                  className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
-                >
-                  {(activePath === item.href) && (
-                     <motion.span
-                      layoutId="active-nav-link"
-                      className="absolute inset-0 bg-primary/70 rounded-full"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                   <span className="relative z-10">{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-          )}
-
-          <div className="flex items-center gap-4 flex-1 justify-end">
-            <AnimatePresence>
-                {!isHeroVisible && (
-                  <motion.div
-                    key="book-tickets-btn-header"
-                    className="hidden md:flex"
+        <div className="flex h-16 items-center rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
+          {pathname === '/' ? (
+            <>
+              <div className="flex items-center gap-6 flex-1">
+                <Logo />
+              </div>
+            
+              <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
+                {navItems.map((item) => (
+                  <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
+                    className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
                   >
-                     <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
-                        <motion.svg
-                            width="140"
-                            height="40"
-                            viewBox="0 0 140 40"
-                            initial="initial"
-                            animate="animate"
-                            exit="exit"
-                            className="absolute"
+                    {(activePath === item.href) && (
+                       <motion.span
+                        layoutId="active-nav-link"
+                        className="absolute inset-0 bg-primary/70 rounded-full"
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                     <span className="relative z-10">{item.label}</span>
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="flex items-center gap-4 flex-1 justify-end">
+                <AnimatePresence>
+                    {!isHeroVisible && (
+                       <motion.div
+                          key="book-tickets-btn-header"
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
                         >
-                            <motion.path
-                                d="M20,1 h100 a19,19 0 0 1 19,19 v2 a19,19 0 0 1 -19,19 h-100 a19,19 0 0 1 -19,-19 v-2 a19,19 0 0 1 19,-19 z"
-                                fill="hsl(var(--accent))"
-                                variants={capsule}
-                            />
-                        </motion.svg>
-                        <motion.span
-                            className="relative font-bold text-accent-foreground whitespace-nowrap"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1, transition: { delay: 0.3 } }}
-                            exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                        >
-                            Book Tickets
-                        </motion.span>
+                          <Link href="/tickets" className="relative h-10 w-[140px] flex items-center justify-center">
+                              <motion.svg
+                                  width="140"
+                                  height="40"
+                                  viewBox="0 0 140 40"
+                                  initial="initial"
+                                  animate="animate"
+                                  exit="exit"
+                                  className="absolute"
+                                  variants={{
+                                      initial: { pathLength: 0, opacity: 0 },
+                                      animate: { pathLength: 1, opacity: 1, transition: { pathLength: { duration: 0.4 }, opacity: { duration: 0.1 } } },
+                                      exit: { pathLength: 0, opacity: 0, transition: { pathLength: { duration: 0.3 } } }
+                                  }}
+                              >
+                                  <motion.path
+                                      d="M20,1 h100 a19,19 0 0 1 19,19 v2 a19,19 0 0 1 -19,19 h-100 a19,19 0 0 1 -19,-19 v-2 a19,19 0 0 1 19,-19 z"
+                                      fill="hsl(var(--accent))"
+                                  />
+                              </motion.svg>
+                              <motion.span
+                                  className="relative font-bold text-accent-foreground whitespace-nowrap"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1, transition: { delay: 0.3 } }}
+                                  exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                              >
+                                  Book Tickets
+                              </motion.span>
+                          </Link>
+                        </motion.div>
+                    )}
+                  </AnimatePresence>
+                 <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                    <Link href="/#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
+                      Contact
                     </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-             <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                <Link href="/#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
-                  Contact
-                </Link>
-            </Button>
-            <div className="md:hidden">
-              <Button onClick={() => setIsMenuOpen(true)} variant="ghost" size="icon" className="text-white">
-                <Menu />
-                <span className="sr-only">Open menu</span>
-              </Button>
+                </Button>
+                <div className="md:hidden">
+                  <Button onClick={() => setIsMenuOpen(true)} variant="ghost" size="icon" className="text-white">
+                    <Menu />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center w-full">
+              <Logo />
             </div>
-          </div>
+          )}
         </div>
       </header>
 
@@ -234,14 +223,22 @@ const Header = () => {
                 </Button>
               </div>
               <nav className="flex flex-col gap-6">
-                {pathname === '/' && navItems.map((item) => (
-                  <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
-                    {item.label}
+                {pathname === '/' ? (
+                  <>
+                    {navItems.map((item) => (
+                      <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
+                        {item.label}
+                      </Link>
+                    ))}
+                     <Link href="/#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
+                        Contact
+                      </Link>
+                  </>
+                ) : (
+                  <Link href="/" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>
+                    Home
                   </Link>
-                ))}
-                 <Link href="/#contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick('#contact')}>
-                    Contact
-                  </Link>
+                )}
               </nav>
                <Button asChild className="w-full mt-8 font-bold">
                   <Link href="/tickets" onClick={() => setIsMenuOpen(false)}>
