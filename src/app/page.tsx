@@ -1,4 +1,8 @@
 
+'use client';
+
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { HelpCircle, Music, Zap, Ticket as TicketIcon, Utensils, Award, Mail } from 'lucide-react';
 import Image from 'next/image';
@@ -30,9 +34,17 @@ const sponsors = [
 export default function Home() {
 
   const eventDate = '2024-09-20T18:30:00';
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div ref={targetRef} className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
       <main className="relative z-0">
 
         {/* Hero Section */}
@@ -40,7 +52,10 @@ export default function Home() {
             <FluidGradient />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10"></div>
             
-            <div className="relative z-20 container px-4 md:px-6 flex flex-col items-center">
+            <motion.div 
+              style={{ scale: heroScale, opacity: heroOpacity }}
+              className="relative z-20 container px-4 md:px-6 flex flex-col items-center"
+            >
                 <h1 className="text-5xl md:text-8xl font-extrabold font-headline text-white drop-shadow-[0_4px_15px_hsl(var(--primary)/0.6)]">
                     SYNVORA
                 </h1>
@@ -55,7 +70,7 @@ export default function Home() {
                       <Link href="/tickets">Book Tickets Now</Link>
                     </Button>
                 </div>
-            </div>
+            </motion.div>
         </section>
 
         {/* About Section */}
@@ -252,3 +267,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
