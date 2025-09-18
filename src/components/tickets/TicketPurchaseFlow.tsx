@@ -73,15 +73,12 @@ export default function TicketPurchaseFlow() {
       <Card className="shadow-2xl animate-in fade-in-50 duration-500 bg-transparent border-none shadow-none">
         <CardHeader className="text-center items-center">
             <Ticket className="w-12 h-12 text-primary mb-2" />
-          <CardTitle className="font-headline text-2xl">Sign In Required</CardTitle>
-          <CardDescription>Please sign in or create an account to book your tickets.</CardDescription>
+          <CardTitle className="font-headline text-2xl">Join The Party</CardTitle>
+          <CardDescription>You're one step away from the mainstage. Sign in to grab your pass!</CardDescription>
         </CardHeader>
         <CardFooter className="flex-col gap-4">
           <Button asChild className="w-full font-bold">
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full">
-            <Link href="/register">Create an Account</Link>
+            <Link href="/login">Sign In to Continue</Link>
           </Button>
         </CardFooter>
       </Card>
