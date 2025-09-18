@@ -1,21 +1,30 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Logo = () => {
   return (
-    <Link href="/" className="flex items-center group">
-      <div 
-        className="relative w-40 h-12"
+    <Link href="/" className="flex items-center group" aria-label="Synvora Home">
+      <svg 
+        width="140" 
+        height="48" 
+        viewBox="0 0 140 48"
+        className="transition-transform group-hover:scale-105"
+        aria-hidden="true"
       >
-        <Image 
-          src="/logo.png" 
-          alt="Synvora Logo" 
-          fill
-          style={{ objectFit: "contain" }}
-          className="transition-transform group-hover:scale-105"
-          priority
-        />
-      </div>
+        <text 
+            x="50%" 
+            y="50%" 
+            dominantBaseline="middle" 
+            textAnchor="middle" 
+            fontFamily="Poppins, sans-serif" 
+            fontSize="24" 
+            fontWeight="800" 
+            fill="hsl(var(--primary-foreground))"
+            letterSpacing="1.5"
+            className="drop-shadow-[0_2px_4px_hsl(var(--primary)/0.5)]"
+        >
+            SYNVORA
+        </text>
+      </svg>
     </Link>
   );
 };

@@ -16,7 +16,7 @@ export default function Home() {
       <main className="relative z-0">
 
         {/* Hero Section */}
-        <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <section id="hero" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
             <FluidGradient />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10"></div>
             

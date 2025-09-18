@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import Logo from './Logo';
 import { Ticket, Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import CountdownTimer from './CountdownTimer';
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/#gallery', label: 'Gallery' },
-  { href: '/#faq', label: 'FAQ' },
+  { href: '/', label: 'Home', targetId: 'hero' }, // Assuming a hero section with id 'hero'
+  { href: '/#gallery', label: 'Gallery', targetId: 'gallery' },
+  { href: '/#faq', label: 'FAQ', targetId: 'faq' },
 ];
 
 const Header = () => {
@@ -20,44 +20,81 @@ const Header = () => {
   const [isHeroCountdownVisible, setIsHeroCountdownVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState('/');
+  
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const sectionRefs = useRef<Map<string, HTMLElement | null>>(new Map());
 
   const pathname = usePathname();
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
-    setActivePath(pathname);
+    // Only run this complex observer logic on the homepage
+    if (pathname === '/') {
+        const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach(entry => {
+                const id = entry.target.id;
+                if (entry.isIntersecting) {
+                   if (id === 'heroBookBtn') setIsHeroCtaVisible(true);
+                   if (id === 'heroCountdown') setIsHeroCountdownVisible(true);
+                   
+                   const navItem = navItems.find(item => item.targetId === id);
+                   if (navItem) {
+                       setActivePath(navItem.href);
+                   }
+                } else {
+                   if (id === 'heroBookBtn') setIsHeroCtaVisible(false);
+                   if (id === 'heroCountdown') setIsHeroCountdownVisible(false);
+                }
+            });
+        };
 
-    // If we're not on the homepage, the hero elements are not visible.
-    if (pathname !== '/') {
+        observerRef.current = new IntersectionObserver(handleIntersect, { 
+            rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of the viewport
+            threshold: 0,
+        });
+
+        // Add hero visibility trackers
+        const heroCtaEl = document.getElementById('heroBookBtn');
+        const heroCountdownEl = document.getElementById('heroCountdown');
+        if (heroCtaEl) observerRef.current.observe(heroCtaEl);
+        if (heroCountdownEl) observerRef.current.observe(heroCountdownEl);
+        
+        // Add section trackers for active nav link
+        navItems.forEach(item => {
+            const element = document.getElementById(item.targetId);
+            if (element) {
+                sectionRefs.current.set(item.targetId, element);
+                observerRef.current?.observe(element);
+            }
+        });
+
+        // Set initial active path based on current scroll position
+        // This handles page reloads
+        let currentActive: string | null = null;
+        let maxVisibleRatio = -1;
+        sectionRefs.current.forEach((el, id) => {
+             if (el) {
+                const rect = el.getBoundingClientRect();
+                const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                const visibleRatio = visibleHeight / rect.height;
+                if (visibleRatio > maxVisibleRatio) {
+                    maxVisibleRatio = visibleRatio;
+                    const navItem = navItems.find(item => item.targetId === id);
+                    if(navItem) currentActive = navItem.href;
+                }
+             }
+        });
+        if(currentActive) setActivePath(currentActive);
+
+    } else {
+      // For other pages, just set the active path from the URL
+      setActivePath(pathname);
       setIsHeroCtaVisible(false);
       setIsHeroCountdownVisible(false);
-      return;
     }
-    
-    // On the homepage, set an observer to track hero elements.
-    const heroCtaEl = document.getElementById('heroBookBtn');
-    const heroCountdownEl = document.getElementById('heroCountdown');
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target.id === 'heroBookBtn') {
-            setIsHeroCtaVisible(entry.isIntersecting);
-          } else if (entry.target.id === 'heroCountdown') {
-            setIsHeroCountdownVisible(entry.isIntersecting);
-          }
-        });
-      },
-      { threshold: 0.1 } // 10% of the element must be visible
-    );
-
-    if (heroCtaEl) observer.observe(heroCtaEl);
-    if (heroCountdownEl) observer.observe(heroCountdownEl);
-
-    // Cleanup observer on component unmount
     return () => {
-      if (heroCtaEl) observer.unobserve(heroCtaEl);
-      if (heroCountdownEl) observer.unobserve(heroCountdownEl);
+        observerRef.current?.disconnect();
     };
 
   }, [pathname]);
@@ -70,11 +107,25 @@ const Header = () => {
     }
   }, [isMenuOpen]);
 
+  const handleNavClick = (href: string) => {
+    setActivePath(href);
+    if(isMenuOpen) setIsMenuOpen(false);
+    
+    // If it's a hash link, let the browser handle the smooth scroll
+    if (href.includes('#')) {
+        const id = href.split('#')[1];
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+  }
+
   return (
     <>
       <header className="fixed top-4 inset-x-0 z-50 max-w-screen-xl mx-auto px-4">
         <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 flex-1">
             <Logo />
             <AnimatePresence>
                 {!isHeroCountdownVisible && (
@@ -92,9 +143,9 @@ const Header = () => {
             </AnimatePresence>
           </div>
           
-          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
+          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
-              <Link key={item.label} href={item.href} onClick={() => setActivePath(item.href)}
+              <Link key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                 className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
               >
                 {item.href === activePath && (
@@ -109,7 +160,7 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-1 justify-end">
              <AnimatePresence>
                 {!isHeroCtaVisible && (
                   <motion.div
@@ -170,7 +221,7 @@ const Header = () => {
               </div>
               <nav className="flex flex-col gap-6">
                 {navItems.map((item) => (
-                  <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>
+                  <Link key={item.label} href={item.href} className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => handleNavClick(item.href)}>
                     {item.label}
                   </Link>
                 ))}
