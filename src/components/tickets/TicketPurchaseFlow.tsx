@@ -8,7 +8,7 @@ import PaymentForm from './PaymentForm';
 import SuccessDisplay from './SuccessDisplay';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import PassSelectionForm, { PassDetails } from './PassSelectionForm';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Ticket } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
@@ -71,9 +71,10 @@ export default function TicketPurchaseFlow() {
   if (!user) {
     return (
       <Card className="shadow-2xl animate-in fade-in-50 duration-500 bg-transparent border-none shadow-none">
-        <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Access Denied</CardTitle>
-          <CardDescription>You must be signed in to book tickets.</CardDescription>
+        <CardHeader className="text-center items-center">
+            <Ticket className="w-12 h-12 text-primary mb-2" />
+          <CardTitle className="font-headline text-2xl">Sign In Required</CardTitle>
+          <CardDescription>Please sign in or create an account to book your tickets.</CardDescription>
         </CardHeader>
         <CardFooter className="flex-col gap-4">
           <Button asChild className="w-full font-bold">
