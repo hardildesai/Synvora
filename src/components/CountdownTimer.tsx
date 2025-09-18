@@ -41,11 +41,11 @@ const CountdownTimer = ({ targetDate, compact = false }: { targetDate: string, c
 
   if (compact) {
     return (
-      <div className="flex items-center gap-3 font-code text-sm">
+      <div className="flex items-center gap-3 font-mono text-sm">
         {timeEntries.map(([interval, value], index) => (
           <React.Fragment key={interval}>
             <div className="flex flex-col items-center">
-              <span className="font-bold text-base">{String(value).padStart(2, '0')}</span>
+              <span className="font-bold text-base text-foreground">{String(value).padStart(2, '0')}</span>
               <span className="text-xs opacity-70">{interval.charAt(0)}</span>
             </div>
             {index < timeEntries.length -1 && <span className="text-primary font-bold text-lg -mt-3">:</span>}
@@ -58,8 +58,8 @@ const CountdownTimer = ({ targetDate, compact = false }: { targetDate: string, c
   return (
     <div className="flex justify-center gap-4 md:gap-8 my-8">
       {timeEntries.map(([interval, value]) => (
-        <div key={interval} className="flex flex-col items-center">
-          <div className="text-4xl md:text-6xl font-bold text-white tracking-widest font-code">
+        <div key={interval} className="flex flex-col items-center p-2 rounded-lg min-w-[70px] md:min-w-[90px] bg-white/5 backdrop-blur-sm">
+          <div className="text-4xl md:text-6xl font-extrabold text-white tracking-tight font-mono">
             {String(value).padStart(2, '0')}
           </div>
           <div className="text-sm md:text-base font-semibold text-primary uppercase tracking-wider">

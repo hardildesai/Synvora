@@ -11,7 +11,6 @@ import { ArrowLeft, Ticket, Users, Utensils } from 'lucide-react';
 import { PassDetails } from './PassSelectionForm';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useAuth } from '@/hooks/use-auth';
 import { useEffect } from 'react';
 
 const formSchema = z.object({
@@ -37,7 +36,6 @@ const passInfo = {
 };
 
 export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: UserDetailsFormProps) {
-  const { user } = useAuth();
   
   const form = useForm<UserDetails>({
     resolver: zodResolver(formSchema),
@@ -47,14 +45,6 @@ export default function UserDetailsForm({ onSubmit, onGoBack, passDetails }: Use
       phone: '',
     },
   });
-
-  useEffect(() => {
-    if (user) {
-      form.setValue('name', user.displayName || '');
-      form.setValue('email', user.email || '');
-    }
-  }, [user, form]);
-
 
   const selectedPass = passInfo[passDetails.passType];
   const SelectedIcon = selectedPass.icon;

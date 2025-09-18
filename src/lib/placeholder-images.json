@@ -1,0 +1,15 @@
+
+{
+    "hero": {
+        "src": "https://picsum.photos/seed/hero2/1920/1080"
+    },
+    "gallery1": {
+        "src": "https://picsum.photos/seed/g11/600/400"
+    },
+    "gallery2": {
+        "src": "https://picsum.photos/seed/g12/600/400"
+    },
+    "gallery3": {
+        "src": "https://picsum.photos/seed/g13/600/400"
+    }
+}

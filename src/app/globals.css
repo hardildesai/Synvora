@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 182 100% 50%;
-    --accent-foreground: 240 10% 3.9%;
-    --destructive: 0 62.8% 30.6%;
+    --background: 262 80% 5%;
+    --foreground: 262 10% 80%;
+    --card: 262 80% 9%;
+    --card-foreground: 262 10% 90%;
+    --popover: 262 80% 3%;
+    --popover-foreground: 262 10% 90%;
+    --primary: 271 100% 50%; /* Electric Purple */
+    --primary-foreground: 271 100% 98%;
+    --secondary: 262 80% 15%;
+    --secondary-foreground: 262 10% 95%;
+    --muted: 262 80% 15%;
+    --muted-foreground: 262 10% 60%;
+    --accent: 45 100% 51%; /* Gold */
+    --accent-foreground: 45 100% 5%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 217 91% 60%;
+    --border: 262 80% 18%;
+    --input: 262 80% 18%;
+    --ring: 271 100% 50%;
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 182 100% 50%;
-    --accent-foreground: 240 10% 3.9%;
-    --destructive: 0 62.8% 30.6%;
+    --background: 262 80% 5%;
+    --foreground: 262 10% 80%;
+    --card: 262 80% 9%;
+    --card-foreground: 262 10% 90%;
+    --popover: 262 80% 3%;
+    --popover-foreground: 262 10% 90%;
+    --primary: 271 100% 50%; /* Electric Purple */
+    --primary-foreground: 271 100% 98%;
+    --secondary: 262 80% 15%;
+    --secondary-foreground: 262 10% 95%;
+    --muted: 262 80% 15%;
+    --muted-foreground: 262 10% 60%;
+    --accent: 45 100% 51%; /* Gold */
+    --accent-foreground: 45 100% 5%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 217 91% 60%;
+    --border: 262 80% 18%;
+    --input: 262 80% 18%;
+    --ring: 271 100% 50%;
   }
 }
  
