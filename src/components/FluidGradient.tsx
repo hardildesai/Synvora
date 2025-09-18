@@ -18,7 +18,6 @@ export default function FluidGradient() {
       private ctx: CanvasRenderingContext2D;
       private width: number;
       private height: number;
-      private gradient: CanvasGradient;
       private angle: number;
       private colors: string[];
 
@@ -29,11 +28,15 @@ export default function FluidGradient() {
         this.angle = 0;
         // Using the theme colors
         this.colors = ['hsl(271, 100%, 50%)', 'hsl(262, 80%, 15%)', 'hsl(45, 100%, 51%)', 'hsl(262, 80%, 5%)'];
-        this.gradient = this.createGradient();
       }
       
       createGradient() {
-        const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+        const x1 = this.width / 2 + Math.cos(this.angle) * this.width;
+        const y1 = this.height / 2 + Math.sin(this.angle) * this.height;
+        const x2 = this.width / 2 + Math.cos(this.angle + Math.PI) * this.width;
+        const y2 = this.height / 2 + Math.sin(this.angle + Math.PI) * this.height;
+        
+        const gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
         const step = 1 / (this.colors.length - 1);
         this.colors.forEach((color, i) => {
             gradient.addColorStop(i * step, color);
@@ -43,22 +46,11 @@ export default function FluidGradient() {
 
       update() {
         this.angle += 0.002;
-        
-        const x1 = this.width / 2 + Math.cos(this.angle) * this.width / 2;
-        const y1 = this.height / 2 + Math.sin(this.angle) * this.height / 2;
-        const x2 = this.width / 2 + Math.cos(this.angle + Math.PI) * this.width / 2;
-        const y2 = this.height / 2 + Math.sin(this.angle + Math.PI) * this.height / 2;
-
-        this.gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
-        const step = 1 / (this.colors.length - 1);
-        this.colors.forEach((color, i) => {
-            const offset = (i * step + this.angle / (2 * Math.PI)) % 1;
-            this.gradient.addColorStop(offset, color);
-        });
       }
 
       draw() {
-        this.ctx.fillStyle = this.gradient;
+        const gradient = this.createGradient();
+        this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.width, this.height);
       }
     }
