@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import CountdownTimer from '@/components/CountdownTimer';
 import placeholderImages from '@/lib/placeholder-images.json';
-import ParticleBackground from '@/components/ParticleBackground';
+import FluidGradient from '@/components/FluidGradient';
 
 export default function Home() {
 
@@ -17,7 +17,7 @@ export default function Home() {
 
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
-            <ParticleBackground />
+            <FluidGradient />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10"></div>
             
             <div className="relative z-20 container px-4 md:px-6 flex flex-col items-center">

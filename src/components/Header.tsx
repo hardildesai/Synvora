@@ -9,30 +9,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
+  { href: '/', label: 'Home' },
   { href: '/#gallery', label: 'Gallery' },
   { href: '/#faq', label: 'FAQ' },
-  { href: '/tickets', label: 'Tickets' },
 ];
 
 const Header = () => {
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activePath, setActivePath] = useState('/');
+
   const pathname = usePathname();
 
   useEffect(() => {
-    // For pages other than home, the CTA should always be visible
+    setActivePath(pathname);
+    // For pages other than home, the CTA should always be visible in the header
     if (pathname !== '/') {
       setIsHeroCtaVisible(false);
       return;
     }
-
+  
     const heroCtaEl = document.getElementById('heroBookBtn');
     if (heroCtaEl) {
       const observer = new IntersectionObserver(
         ([entry]) => {
           setIsHeroCtaVisible(entry.isIntersecting);
         },
-        { threshold: 0.5 } 
+        { threshold: 0.1 } 
       );
       observer.observe(heroCtaEl);
       return () => observer.disconnect();
@@ -49,47 +52,59 @@ const Header = () => {
     }
   }, [isMenuOpen]);
 
-  const navTransition = { duration: 0.3, ease: 'easeInOut' };
-
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 shadow-lg shadow-black/20 backdrop-blur-xl">
-        <div className="container flex h-20 max-w-screen-2xl items-center justify-between">
+      <header className="fixed top-4 inset-x-0 z-50 max-w-screen-xl mx-auto px-4">
+        <div className="flex h-16 items-center justify-between rounded-full bg-background/30 px-6 shadow-lg shadow-black/20 backdrop-blur-xl border border-white/10">
           <Logo />
           
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-2 bg-white/5 p-1 rounded-full">
             {navItems.map((item) => (
-              <Link key={item.label} href={item.href} className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                {item.label}
+              <Link key={item.label} href={item.href} onClick={() => setActivePath(item.href)}
+                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground px-4 py-1.5 rounded-full"
+              >
+                {item.href === activePath && (
+                   <motion.span
+                    layoutId="active-nav-link"
+                    className="absolute inset-0 bg-primary/70 rounded-full"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                 <span className="relative z-10">{item.label}</span>
               </Link>
             ))}
           </nav>
 
-          <AnimatePresence>
-            {(!isHeroCtaVisible || pathname !== '/') && (
-              <motion.div
-                key="book-tickets-btn-header"
-                initial={{ x: '110%', opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: '110%', opacity: 0 }}
-                transition={navTransition}
-                className="hidden md:block"
-              >
-                <Button asChild className="font-bold shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-shadow">
-                    <Link href="/tickets">
-                    <Ticket className="mr-2 h-4 w-4" />
-                    Book Tickets
-                    </Link>
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="md:hidden">
-            <Button onClick={() => setIsMenuOpen(true)} variant="ghost" size="icon">
-              <Menu />
-              <span className="sr-only">Open menu</span>
+          <div className="flex items-center gap-4">
+             <AnimatePresence>
+                {!isHeroCtaVisible && (
+                  <motion.div
+                    key="book-tickets-btn-header"
+                    initial={{ scale: 0, opacity: 0, y: -20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0, opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="hidden md:block"
+                  >
+                    <Button asChild variant="outline" className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full">
+                        <Link href="/tickets">
+                        Book Tickets
+                        </Link>
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+             <Button asChild className="hidden md:block rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                <Link href="/contact">
+                  Contact
+                </Link>
             </Button>
+            <div className="md:hidden">
+              <Button onClick={() => setIsMenuOpen(true)} variant="ghost" size="icon" className="text-white">
+                <Menu />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -101,7 +116,7 @@ const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm md:hidden"
             onClick={() => setIsMenuOpen(false)}
           >
             <motion.div
@@ -125,6 +140,9 @@ const Header = () => {
                     {item.label}
                   </Link>
                 ))}
+                 <Link href="/contact" className="text-lg font-medium text-foreground transition-colors hover:text-primary" onClick={() => setIsMenuOpen(false)}>
+                    Contact
+                  </Link>
               </nav>
                <Button asChild className="w-full mt-8 font-bold">
                   <Link href="/tickets" onClick={() => setIsMenuOpen(false)}>
