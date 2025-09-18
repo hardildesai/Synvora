@@ -28,6 +28,10 @@ const Header = () => {
   const eventDate = '2024-09-20T18:30:00';
 
   useEffect(() => {
+    // Ensure this only runs on the client
+    if (typeof window === 'undefined') return;
+
+    // Disconnect previous observer if it exists
     if (observerRef.current) {
         observerRef.current.disconnect();
     }
@@ -35,47 +39,57 @@ const Header = () => {
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
         entries.forEach(entry => {
             const id = entry.target.id;
-            if (entry.isIntersecting) {
-               if (id === 'heroBookBtn') setIsHeroCtaVisible(true);
-               if (id === 'heroCountdown') setIsHeroCountdownVisible(true);
-            } else {
-               if (id === 'heroBookBtn') setIsHeroCtaVisible(false);
-               if (id === 'heroCountdown') setIsHeroCountdownVisible(false);
+            
+            if (id === 'heroBookBtn') {
+                setIsHeroCtaVisible(entry.isIntersecting);
+            }
+            if (id === 'heroCountdown') {
+                setIsHeroCountdownVisible(entry.isIntersecting);
             }
 
             if(entry.isIntersecting) {
                 const navItem = navItems.find(item => item.targetId === id);
                 if (navItem) {
-                    setActivePath(item.href);
+                    setActivePath(navItem.href);
                 }
             }
         });
     };
+    
+    // Set initial state based on current path
+    if (pathname !== '/') {
+        setActivePath(pathname);
+        setIsHeroCtaVisible(false);
+        setIsHeroCountdownVisible(false);
+        return; // Don't set up observers on non-home pages
+    }
+    
+    // Set initial visibility on mount for home page
+    const heroCtaEl = document.getElementById('heroBookBtn');
+    setIsHeroCtaVisible(!!(heroCtaEl && heroCtaEl.getBoundingClientRect().top < window.innerHeight && heroCtaEl.getBoundingClientRect().bottom > 0));
+    
+    const heroCountdownEl = document.getElementById('heroCountdown');
+    setIsHeroCountdownVisible(!!(heroCountdownEl && heroCountdownEl.getBoundingClientRect().top < window.innerHeight && heroCountdownEl.getBoundingClientRect().bottom > 0));
+
 
     observerRef.current = new IntersectionObserver(handleIntersect, { 
         rootMargin: '-50% 0px -50% 0px',
         threshold: 0,
     });
     
-    if (pathname === '/') {
-        const heroCtaEl = document.getElementById('heroBookBtn');
-        const heroCountdownEl = document.getElementById('heroCountdown');
-        if (heroCtaEl) observerRef.current.observe(heroCtaEl);
-        if (heroCountdownEl) observerRef.current.observe(heroCountdownEl);
-        
-        navItems.forEach(item => {
-            if (item.targetId) {
-                const element = document.getElementById(item.targetId);
-                if (element) {
-                    observerRef.current?.observe(element);
-                }
+    // Observe all target elements
+    navItems.forEach(item => {
+        if (item.targetId) {
+            const element = document.getElementById(item.targetId);
+            if (element) {
+                observerRef.current?.observe(element);
             }
-        });
-    } else {
-      setActivePath(pathname);
-      setIsHeroCtaVisible(false);
-      setIsHeroCountdownVisible(false);
-    }
+        }
+    });
+
+    if (heroCtaEl) observerRef.current.observe(heroCtaEl);
+    if (heroCountdownEl) observerRef.current.observe(heroCountdownEl);
+
 
     return () => {
         if (observerRef.current) {
