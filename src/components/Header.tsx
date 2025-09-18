@@ -24,38 +24,37 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only run this observer logic on the homepage
     if (pathname !== '/') {
-        setActivePath(pathname);
-        setIsHeroCtaVisible(false);
-        if (observerRef.current) {
-            observerRef.current.disconnect();
-        }
-        return;
+      setActivePath(pathname);
+      setIsHeroCtaVisible(false);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+      return;
     }
-
+    
     const handleIntersect: IntersectionObserverCallback = (entries) => {
-        entries.forEach(entry => {
-            if (entry.target.id === 'heroBookBtn') {
-                setIsHeroCtaVisible(entry.isIntersecting);
-            } else {
-                if (entry.isIntersecting) {
-                    const navItem = navItems.find(item => item.targetId === entry.target.id);
-                    if (navItem) {
-                        setActivePath(navItem.href);
-                    }
+      entries.forEach(entry => {
+        if (entry.target.id === 'heroBookBtn') {
+          setIsHeroCtaVisible(entry.isIntersecting);
+        } else {
+            if (entry.isIntersecting) {
+                const navItem = navItems.find(item => item.targetId === entry.target.id);
+                if (navItem) {
+                    setActivePath(navItem.href);
                 }
             }
-        });
+        }
+      });
     };
 
     if (observerRef.current) {
-        observerRef.current.disconnect();
+      observerRef.current.disconnect();
     }
 
     observerRef.current = new IntersectionObserver(handleIntersect, {
-        rootMargin: '-50% 0px -50% 0px', // Trigger when element is in the middle of the viewport
-        threshold: 0,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0,
     });
 
     const elementsToObserve = navItems
@@ -66,30 +65,12 @@ const Header = () => {
 
     elementsToObserve.forEach(el => observerRef.current?.observe(el));
 
-    // Initial check in case elements are already in view on load
-    elementsToObserve.forEach(el => {
-        if (el) {
-            handleIntersect([{
-                target: el,
-                isIntersecting: true,
-                boundingClientRect: el.getBoundingClientRect(),
-                intersectionRatio: 1,
-                intersectionRect: el.getBoundingClientRect(),
-                rootBounds: null,
-                time: 0
-            }], observerRef.current!);
-        }
-    });
-
-
     return () => {
-        if (observerRef.current) {
-            observerRef.current.disconnect();
-        }
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
-
   }, [pathname]);
-
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -112,7 +93,6 @@ const Header = () => {
           }
         }
     } else {
-      // It's a page link
       const targetElement = document.querySelector(href);
        if (targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -146,46 +126,46 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-4 flex-1 justify-end">
-             <AnimatePresence>
+            <AnimatePresence>
                 {!isHeroCtaVisible && (
                   <motion.div
                     key="book-tickets-btn-header"
                     className="hidden md:flex justify-end"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <motion.button
-                      initial={{ opacity: 0, width: 40, borderRadius: '100%' }}
+                    <motion.div
+                      className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap h-10 flex items-center justify-center overflow-hidden"
+                      initial={{ width: 40, borderRadius: '100%' }}
                       animate={{
-                        opacity: 1,
                         width: 'auto',
                         borderRadius: '9999px',
                         transition: {
-                          opacity: { duration: 0.2, delay: 0.1 },
-                          width: { duration: 0.3, delay: 0.2, ease: 'circOut' },
-                          borderRadius: { duration: 0.3, delay: 0.2, ease: 'circOut' },
+                          width: { duration: 0.3, ease: 'circOut' },
+                          borderRadius: { duration: 0.3, ease: 'circOut' },
                         },
                       }}
                       exit={{
-                        opacity: 0,
                         width: 40,
                         borderRadius: '100%',
                         transition: {
-                          opacity: { duration: 0.2, delay: 0.2 },
                           width: { duration: 0.3, ease: 'circIn' },
                           borderRadius: { duration: 0.3, ease: 'circIn' },
                         },
                       }}
-                      className="font-bold bg-accent text-accent-foreground hover:bg-accent/90 hover:text-accent-foreground border-none rounded-full whitespace-nowrap h-10 px-6"
                     >
-                      <Link href="/tickets">
+                      <Link href="/tickets" className="px-6 h-full flex items-center">
                          <motion.span 
                             initial={{opacity: 0}} 
-                            animate={{opacity: 1, transition:{delay: 0.4}}} 
+                            animate={{opacity: 1, transition:{delay: 0.2}}} 
                             exit={{opacity:0, transition: {duration: 0.1}}}
                          >
                           Book Tickets
                          </motion.span>
                       </Link>
-                    </motion.button>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
